@@ -2,6 +2,7 @@
 
 import json
 
+from comm import STARTER_CLONE_URL
 from rich import txt
 from ui import T
 
@@ -53,6 +54,8 @@ def page():
             (3, "CgtVEjmEeLrC6kfRxoPZD", "Service examples", "Copy-paste setups for 23 common services, from Google Analytics to Calendly."),
             (4, "FCi6-VSonqxrmw79t5_ST", "Documentation", "Every attribute, variable, token and API, to build it by hand."),
         ]
+    ) + (
+        f"<a href='{STARTER_CLONE_URL}' target='_blank' rel='noopener' {T('site-card', 'is-site-card-link')}><span {T('site-card-number')}>5</span><h3 {T('site-heading-small')}>{txt('Starter project')}</h3><p {T('site-text')}>{txt('Starting a new site? Clone a Webstudio project with Native CMP already installed.')}</p></a>"
     )
     return f"""
 <main ws:label='Install with AI'>
@@ -99,7 +102,7 @@ def page():
     <div {T('site-container')}>
       <div {T('site-stack')}>
         <p {T('site-eyebrow')}>{txt('Prefer to do it yourself?')}</p>
-        <h2 {T('site-heading')}>{txt('Three more ways to install.')}</h2>
+        <h2 {T('site-heading')}>{txt('Four more ways to install.')}</h2>
       </div>
       <div {T('site-grid')}>{others}</div>
     </div>

@@ -1,5 +1,6 @@
 """Shared site header and footer (Slots) with page-referenced links."""
 
+from comm import GITHUB_URL, STARTER_URL
 from rich import txt
 from ui import T
 
@@ -93,9 +94,10 @@ def support_link(tokens=("consent-link",), pairs=SUPPORT):
 
 
 def footer():
+    href = lambda target: f"'{target}'" if target.startswith("https://") else page(target)
     links = "".join(
-        f"<a href={page(key)} {T('consent-link')}>{txt(label)}</a>"
-        for key, label in [("install", "AI install"), ("generator", "Generator"), ("examples", "Examples"), ("docs", "Documentation"), ("contact", "Contact"), ("privacy", "Privacy policy"), ("legal", "Legal notice")]
+        f"<a href={href(target)} {T('consent-link')}>{txt(label)}</a>"
+        for target, label in [("install", "AI install"), ("generator", "Generator"), ("examples", "Examples"), ("docs", "Documentation"), (STARTER_URL, "Starter"), (GITHUB_URL, "GitHub"), ("contact", "Contact"), ("privacy", "Privacy policy"), ("legal", "Legal notice")]
     )
     return f"""
 <footer ws:label='Site Footer' {T('site-footer')}>

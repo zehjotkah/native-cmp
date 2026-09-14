@@ -31,6 +31,7 @@ SECTIONS = [
             "**Attributes**: behavior is wired with `data-cmp-*` attributes, so any element you design can open the settings, show a status or wait for consent.",
             "**Craft tokens**: every part of the UI is a composite Token backed by semantic CSS variables.",
         ]),
+        p("Native CMP is free and open source under the [AGPL-3.0-or-later license](https://github.com/zehjotkah/native-cmp/blob/main/LICENSE). The source code, build scripts and tests are on [GitHub](https://github.com/zehjotkah/native-cmp)."),
         callout("The CMP gives you technical building blocks for a GDPR- and ePrivacy-friendly setup: prior blocking, granular purposes, equally prominent choices, revocation and cookie cleanup. Whether a site is compliant also depends on its texts, services and privacy policy."),
     ]),
     ("installation", "Installation", [

@@ -13,6 +13,13 @@ PAGE = {
 }
 
 
+# public source code and the cloneable starter project (read-only share link; View links can be cloned)
+GITHUB_URL = "https://github.com/zehjotkah/native-cmp"
+STARTER_URL = "https://starter.nativecmp.com"
+STARTER_CLONE_URL = "https://p-efd5ae31-66d4-4782-b4df-f4715407ce01.apps.webstudio.is/?authToken=75f8486f-a6c5-431a-a442-4b102d1fbbb8&mode=preview"
+STARTER_SUMMARY = "a Webstudio project with the engine, the Consent Manager, a Consent preview page and example gates already set up"
+
+
 def page_link(key):
     return "{new PageValue('" + PAGE[key] + "')}"
 
@@ -77,5 +84,6 @@ def docs_blocks():
             "maps the consent UI to your colors, radii and fonts and verifies the result.",
         ]),
         p("It shows you its plan before changing anything and never publishes. See [Install with AI](/install) for the prompt. Prefer to do it yourself? Use the [generator](/generator), copy from the [examples](/examples) or follow the manual steps below."),
+        p(f"Starting a new site? Clone the [Native CMP Starter]({STARTER_CLONE_URL}), {STARTER_SUMMARY}. See it live at [starter.nativecmp.com]({STARTER_URL})."),
         h3("Manual installation", "manual-install"),
     ])

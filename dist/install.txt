@@ -7,6 +7,8 @@
 - Install bundle (JSON, served as text): https://nativecmp.com/install/steps.txt
 - Installer script: https://nativecmp.com/install/install.js
 - Human documentation: https://nativecmp.com/docs · Config generator: https://nativecmp.com/generator · Service examples: https://nativecmp.com/examples
+- New site instead of an existing project? The user can clone the starter project (https://starter.nativecmp.com), which already has everything in section 3 installed: https://p-efd5ae31-66d4-4782-b4df-f4715407ce01.apps.webstudio.is/?authToken=75f8486f-a6c5-431a-a442-4b102d1fbbb8&mode=preview
+- Source code (AGPL-3.0-or-later): https://github.com/zehjotkah/native-cmp
 
 ## What you do for the user
 

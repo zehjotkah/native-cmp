@@ -4,6 +4,7 @@ import json
 import pathlib
 
 import install_bundle
+from comm import GITHUB_URL, STARTER_CLONE_URL, STARTER_SUMMARY, STARTER_URL
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE = "https://nativecmp.com"
@@ -35,6 +36,8 @@ def install_md(bundle):
 - Install bundle (JSON, served as text): {SITE}/install/steps.txt
 - Installer script: {SITE}/install/install.js
 - Human documentation: {SITE}/docs · Config generator: {SITE}/generator · Service examples: {SITE}/examples
+- New site instead of an existing project? The user can clone the starter project ({STARTER_URL}), which already has everything in section 3 installed: {STARTER_CLONE_URL}
+- Source code (AGPL-3.0-or-later): {GITHUB_URL}
 
 ## What you do for the user
 
@@ -227,6 +230,11 @@ The engine runs from Project Settings → Custom Code; the notice and preference
 - [Config generator]({SITE}/generator): builds a complete configuration and Webstudio clipboard fragments
 - [Service examples]({SITE}/examples): ready-to-copy configurations for 23 common services
 - [Documentation]({SITE}/docs): installation, configuration, services, languages, blocking scripts and embeds, Consent Gates, attributes, JavaScript API, Consent Mode, design tokens
+- [Starter project]({STARTER_CLONE_URL}): {STARTER_SUMMARY}, to clone for a new site ([live demo]({STARTER_URL}))
+
+## Source
+
+- [GitHub repository]({GITHUB_URL}): engine, generator, installer, install bundle, build scripts and tests, licensed under AGPL-3.0-or-later
 
 ## Optional
 
