@@ -1069,6 +1069,8 @@ TOKENS_V8 = {
     "is-site-card-featured": {
         "base": {**border("2px", "var(--border-focus)"), "background-color": "var(--background-primary)"},
     },
+    # full-row card, e.g. the starter project as the fifth install way
+    "is-site-card-wide": {"base": {"grid-column-start": "1", "grid-column-end": "-1"}},
 }
 
 # "Used by" logo marquee on Home. Two identical lists scroll by their own width plus the gap,

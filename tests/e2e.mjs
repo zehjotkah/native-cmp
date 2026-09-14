@@ -692,14 +692,15 @@ await dc.close();
   await xp.goto(BASE + "/docs", { waitUntil: "networkidle" });
   check("agents: docs start with the AI install and link the guide", (await xp.locator("#installation a[href='https://nativecmp.com/install.txt']").count()) === 1 && (await xp.locator("#installation h3").first().innerText()).startsWith("Install with an AI agent"));
 
-  // communication: AI install first, then generator, examples, docs
+  // communication: AI install first, then generator, examples, docs, starter
   await xp.goto(BASE + "/", { waitUntil: "networkidle" });
   const ways = await xp.locator("#install [data-ws-label='Install Ways'] > a, #install a h3").allInnerTexts();
   const heroPrimary = await xp.locator("main section").first().locator("a").first();
   check("home: hero primary action is Install with AI", (await heroPrimary.innerText()) === "Install with AI" && (await heroPrimary.getAttribute("href")) === "/install");
-  check("home: install ways ordered AI, generator, examples, docs", await xp.evaluate(() => {
+  check("home: install ways ordered AI, generator, examples, docs, starter", await xp.evaluate(() => {
     const titles = [...document.querySelectorAll("#install a h3")].map((h) => h.textContent.trim());
-    return JSON.stringify(titles) === JSON.stringify(["AI agent via Webstudio MCP", "Config generator", "Service examples", "Documentation"]);
+    const starter = [...document.querySelectorAll("#install a")].find((a) => a.textContent.includes("Starter project"));
+    return JSON.stringify(titles) === JSON.stringify(["AI agent via Webstudio MCP", "Config generator", "Service examples", "Documentation", "Starter project"]) && starter?.getAttribute("href") === "https://starter.nativecmp.com";
   }));
   check("home: FAQ answers the AI install question first", (await xp.locator("#faq summary").first().innerText()) === "Can an AI agent install Native CMP?");
   const installPage = await xp.goto(BASE + "/install", { waitUntil: "networkidle" });

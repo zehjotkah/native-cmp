@@ -42,19 +42,21 @@ WAYS = [
     ("generator", None, "Config generator", "Pick your services, enter IDs and paste the result into Webstudio: Custom Code, Consent Manager, gates and link.", "Open the generator"),
     ("examples", None, "Service examples", "Copy-paste setups for 23 common services, from Google Analytics to Calendly.", "Browse examples"),
     ("docs", None, "Documentation", "Every attribute, variable, token and API, to build or extend it by hand.", "Read the docs"),
+    (STARTER_URL, None, "Starter project", "Starting a new site? Clone a Webstudio project with Native CMP already installed and style it right on the canvas.", "Open the starter"),
 ]
 
 
 def install_ways():
     cards = ""
     for i, (key, badge, title, text, cta) in enumerate(WAYS):
-        tokens = ("site-card", "is-site-card-link", "is-site-card-featured") if badge else ("site-card", "is-site-card-link")
+        tokens = ("site-card", "is-site-card-link") + (("is-site-card-featured",) if badge else ()) + (("is-site-card-wide",) if key.startswith("https://") else ())
         badge_html = f"<span {T('site-badge', 'is-site-badge-start')}>{txt(badge)}</span>" if badge else ""
-        cards += f"""<a href={page_link(key)} {T(*tokens)}><span {T('site-card-number')}>{i + 1}</span>{badge_html}<h3 {T('site-heading-small')}>{txt(title)}</h3><p {T('site-text')}>{txt(text)}</p><span {T('consent-link')}>{txt(cta + ' →')}</span></a>"""
+        href = "{" + json.dumps(key) + "}" if key.startswith("https://") else page_link(key)
+        cards += f"""<a href={href} {T(*tokens)}><span {T('site-card-number')}>{i + 1}</span>{badge_html}<h3 {T('site-heading-small')}>{txt(title)}</h3><p {T('site-text')}>{txt(text)}</p><span {T('consent-link')}>{txt(cta + ' →')}</span></a>"""
     return f"<div ws:label='Install Ways' {T('site-grid')}>{cards}</div>"
 
 
-INSTALL_HEADING = "Four ways to install. One does it all for you."
+INSTALL_HEADING = "Five ways to install. One does it all for you."
 INSTALL_LEAD = "Let your AI agent handle the whole setup, or pick the level of control you want. Everything stays inside your Webstudio project."
 
 FAQ_ITEM = (
