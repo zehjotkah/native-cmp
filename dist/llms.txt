@@ -1,0 +1,23 @@
+# Native CMP
+
+> Free cookie, script and embed consent manager built from native Webstudio instances. It blocks third-party scripts, embeds and Webstudio's YouTube and Vimeo components until visitors consent, works with Webstudio's client-side navigation, supports any language including right-to-left, is styled with Craft design tokens and supports Google Consent Mode v2. An AI agent connected to the Webstudio MCP can install it completely: it finds and blocks third-party scripts and embeds, configures cookies and texts, drafts the privacy policy section and matches the site's design. Made by ELECOS UG (haftungsbeschränkt).
+
+The engine runs from Project Settings → Custom Code; the notice and preferences modal are a shared Slot built from regular Webstudio elements, configured with the `consentServices` and `consentTranslations` variables.
+
+## Install with an AI agent (recommended)
+
+- [Install with AI](https://nativecmp.com/install): what the agent does and the prompt to use
+- [Install guide for agents](https://nativecmp.com/install.txt): scan the project, install, configure services and cookies, block scripts and embeds, update the privacy policy, match the design, verify
+- [Install bundle](https://nativecmp.com/install/steps.txt): tokens, CSS variables, Custom Code and JSX fragments as JSON (served as text)
+- [Installer script](https://nativecmp.com/install/install.js): runs the bundle through the Webstudio CLI
+
+## Do it yourself
+
+- [Config generator](https://nativecmp.com/generator): builds a complete configuration and Webstudio clipboard fragments
+- [Service examples](https://nativecmp.com/examples): ready-to-copy configurations for 23 common services
+- [Documentation](https://nativecmp.com/docs): installation, configuration, services, languages, blocking scripts and embeds, Consent Gates, attributes, JavaScript API, Consent Mode, design tokens
+
+## Optional
+
+- [Contact](https://nativecmp.com/contact)
+- [Legal notice](https://nativecmp.com/legal-notice)

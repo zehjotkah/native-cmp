@@ -1,0 +1,1 @@
+{"private":true,"type":"module","scripts":{"test":"node e2e.mjs"},"devDependencies":{"@webstudio-is/sdk":"^0.298.0","playwright-core":"1.52.0"}}

@@ -1,0 +1,14 @@
+# Webstudio CLI sync data
+.webstudio/
+
+# Scratch files
+.temp/
+
+# Tests
+tests/node_modules/
+tests/screenshots/
+
+# System and editor files
+.DS_Store
+__pycache__/
+*.pyc

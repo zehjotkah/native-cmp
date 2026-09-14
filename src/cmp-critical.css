@@ -1,0 +1,18 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+html[data-cmp]:not([data-cmp-open="notice"]) [data-cmp-notice]:not([data-cmp-preview] *),
+html[data-cmp]:not([data-cmp-open="modal"]) [data-cmp-modal]:not([data-cmp-preview] *),
+html[data-cmp-confirmed="true"] [data-cmp-if~="unconfirmed"],
+html[data-cmp-confirmed="false"]:not([data-cmp-mode="contextual"]) [data-cmp-if~="confirmed"],
+html[data-cmp]:not([data-cmp-changed]) [data-cmp-if~="changed"],
+[data-cmp-gate]:not([data-cmp-state="granted"]):not([data-cmp-gate-mode="interaction"]) [data-cmp-gate-content],
+[data-cmp-gate][data-cmp-state="granted"] [data-cmp-gate-notice],
+[data-cmp-gate][data-cmp-gate-mode="interaction"]:not([data-cmp-requested]) [data-cmp-gate-notice],
+:is(iframe, img, video, audio, embed, object)[data-cmp-service]:not([data-cmp-state="granted"]) {
+  display: none !important;
+}
+html[data-cmp-open="modal"] {
+  overflow: hidden;
+}
+[data-cmp-if][data-cmp-hidden] {
+  display: none !important;
+}
