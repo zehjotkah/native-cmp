@@ -1,0 +1,17 @@
+{
+  "name": "native-cmp-consent-log",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-01",
+  "observability": { "enabled": true },
+  "vars": {
+    "RETENTION_DAYS": "1095",
+    "ALLOWED_ORIGINS": ""
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "native-cmp-consent-log",
+      "database_id": "00000000-0000-4000-8000-000000000000"
+    }
+  ]
+}
