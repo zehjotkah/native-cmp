@@ -4,6 +4,9 @@
 # Scratch files
 .temp/
 
+# Dependencies
+node_modules/
+
 # Tests
 tests/node_modules/
 tests/screenshots/
