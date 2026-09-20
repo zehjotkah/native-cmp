@@ -36,6 +36,11 @@ def minify_css(text):
     return text.replace(";}", "}").strip()
 
 
+# This site's own consent log (Cloudflare Worker in log/, deployed to ELECOS's account).
+# Only added to this project's Custom Code, never to dist/cmp-head.html, which the generator hands out.
+SITE_ONLY_CONSENT_LOG = "https://consentlog.nativecmp.com"
+
+
 def build():
     DIST.mkdir(exist_ok=True)
     config = (SRC / "cmp-config.js").read_text().strip()
@@ -57,7 +62,13 @@ def build():
     )
     (DIST / "cmp-head.html").write_text(head + "\n")
     (ROOT / ".temp").mkdir(exist_ok=True)
-    (ROOT / ".temp" / "project-settings.json").write_text(json.dumps({"meta": {"code": SITE_ONLY_HEAD + "\n" + head}}))
+    site_head = head.replace(
+        "  dataLayer: false,",
+        f'  dataLayer: false,\n  consentLog: "{SITE_ONLY_CONSENT_LOG}",',
+        1,
+    )
+    assert SITE_ONLY_CONSENT_LOG in site_head
+    (ROOT / ".temp" / "project-settings.json").write_text(json.dumps({"meta": {"code": SITE_ONLY_HEAD + "\n" + site_head}}))
     print(f"dist/cmp-head.html {len(head)} bytes")
 
 

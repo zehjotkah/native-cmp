@@ -30,6 +30,8 @@ const newContext = browser.newContext.bind(browser);
 browser.newContext = async (...args) => {
   const ctx = await newContext(...args);
   await ctx.route(/insight\.nativecmp\.com/, (route) => route.abort());
+  // never write test decisions into the site's real consent log (page routes still win)
+  await ctx.route(/consentlog\.nativecmp\.com/, (route) => route.abort());
   return ctx;
 };
 const context = await browser.newContext({ viewport: { width: 1280, height: 860 } });
@@ -837,17 +839,23 @@ check("mobile generator: update section doesn't overflow (only code blocks scrol
   const afterReset = await lp.evaluate(() => window.cmp.getConsentId());
   check("consent log: a new decision after reset gets a new consent ID", afterReset === "");
 
-  // a site without the setting must send nothing at all
+  // this site's own configuration: decisions go to its consent log, and nowhere else
   const np = await lc.newPage();
-  const stray = [];
-  await np.route("https://consentlog.test/**", async (route) => {
-    stray.push(route.request().url());
+  const sent = [];
+  const elsewhere = [];
+  await np.route("https://consentlog.nativecmp.com/**", async (route) => {
+    sent.push(JSON.parse(route.request().postData() || "{}"));
     await route.fulfill({ status: 202, body: "ok" });
   });
+  np.on("request", (request) => {
+    if (/consentlog|consent-log/.test(request.url()) && !request.url().startsWith("https://consentlog.nativecmp.com")) elsewhere.push(request.url());
+  });
   await np.goto(BASE + "/", { waitUntil: "networkidle" });
-  await np.locator('[data-cmp-notice] [data-cmp-action="accept-all"]:visible').first().click();
-  await np.waitForTimeout(400);
-  check("consent log: off by default", stray.length === 0);
+  check("consent log: this site sends nothing before a decision", sent.length === 0);
+  await np.locator('[data-cmp-notice]:not([data-cmp-preview] *) [data-cmp-action="accept-all"]').first().click();
+  await np.waitForTimeout(600);
+  check("consent log: this site logs to consentlog.nativecmp.com", sent.length === 1 && !!sent[0].id && sent[0].type === "accept", `entries=${sent.length}`);
+  check("consent log: no other log endpoint is contacted", elsewhere.length === 0, elsewhere.slice(0, 2).join(" "));
   check("consent log: sent with sendBeacon so a decision is never delayed", (await lp.evaluate(() => window.__beacons.length)) === 3);
   await lc.close();
 }

@@ -348,6 +348,7 @@ document.addEventListener("cmp:service", (event) => console.log(event.detail));'
             "**Other backends**: any endpoint that accepts a POST works, for example an n8n or Make webhook. The [Worker source](" + comm.LOG_SOURCE_URL + ") shows the payload.",
         ]),
         p("**In your privacy policy**, name the log, for example: “When you make a privacy choice, we store that choice together with a random ID, the time and the language on our own server (Cloudflare) for three years, so that we can demonstrate your consent. Your IP address is not stored.”"),
+        p("**Live example**: this site runs its own log at `consentlog.nativecmp.com`, deployed from `log/` in the repository. Decisions made on nativecmp.com are recorded there, without IP addresses."),
         callout("A consent log is evidence, not compliance. Whether your site is lawful also depends on your texts, your services and your privacy policy."),
     ]),
     ("consent-mode", "Google Consent Mode & GTM", [

@@ -244,6 +244,22 @@ def design():
     return section("design", "Craft design system", "Styled with tokens you already know.", "Every part of the consent UI is a composite token backed by Craft semantic variables. Use your own theme, or restyle a single token.", body, muted=True)
 
 
+def proof():
+    cards = [
+        card("A consent ID per decision", "Every choice is stored with a random ID that the preferences dialog shows the visitor. When someone asks what they agreed to, that ID finds it — no IP address needed."),
+        card("Your own log, in one click", "Deploy a small Cloudflare Worker with a database into your own account, paste its URL into the config and every decision is recorded: time, type, choices, language."),
+        card("No IP addresses, ever", "IP addresses change with every network and are personal data themselves, so the log never stores them. Entries are deleted automatically after three years."),
+        code_card("Custom Code", 'window.cmpConfig = {\n  consentLog: "https://consentlog.example.com",\n};', "Off by default. Add a custom domain such as consentlog.yourdomain.com, so the log is not a third-party domain for your visitors."),
+    ]
+    body = f"<div {T('site-grid', 'is-site-grid-wide')}>" + "".join(cards) + f"""</div>
+<div {T('site-actions')}>
+  <a href='{comm.LOG_DEPLOY_URL}' target='_blank' rel='noopener' {T('consent-button', 'is-consent-button-secondary')}>{txt('Deploy the consent log')}</a>
+  <a href='/docs#proof-of-consent' {T('consent-link')}>{txt('How proof of consent works')}</a>
+</div>
+<p {T('site-help')}>{txt('This site uses it: decisions made here are logged to consentlog.nativecmp.com, without IP addresses.')}</p>"""
+    return section("proof", "Proof of consent", "Show what someone agreed to.", "The GDPR asks you to be able to demonstrate consent. Native CMP stores every decision with a consent ID, and an optional log keeps the record in your own account.", body)
+
+
 def features():
     items = [
         ("Accept, decline, customize", "Equal-weight buttons, granular purposes and a preferences modal."),
@@ -316,7 +332,7 @@ def footer():
 def onepager_parts():
     return [
         header(),
-        "<main ws:label='Onepager'>" + hero() + used_by() + how() + demo() + scripts() + languages() + design() + features() + install() + faq() + support() + "</main>",
+        "<main ws:label='Onepager'>" + hero() + used_by() + how() + demo() + scripts() + languages() + design() + proof() + features() + install() + faq() + support() + "</main>",
         footer(),
         f"<HtmlEmbed ws:label='Managed Scripts (demo)' code={js(MANAGED_SCRIPTS)} />",
     ]
