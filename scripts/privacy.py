@@ -9,19 +9,9 @@ client-side navigation.
 """
 
 from rich import txt, rich, table, callout, page_header, page_footer, intro
-from ui import T, gate_fragment, MANAGED_SCRIPTS, js
+from ui import T, MANAGED_SCRIPTS, js
 
 UPDATED = "20 September 2026"
-
-MAPS_EMBED = (
-    "<template data-cmp-service='google-maps'>"
-    "<iframe src='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2420.1!2d13.5!3d52.65!3m2!1i1024!2i768!4f13.1"
-    "!3m3!1m2!1s0x0%3A0x0!2sPanketal!5e0!3m2!1sen!2sde!4v1700000000000' "
-    "title='Map' style='display:block;width:100%;aspect-ratio:16/9;border:0' loading='lazy' "
-    "referrerpolicy='no-referrer-when-downgrade' allowfullscreen></iframe>"
-    "</template>"
-)
-
 
 def h2(text, id_=None):
     ident = f" id='{id_}'" if id_ else ""
@@ -83,7 +73,7 @@ ANALYTICS = section("analytics", "Website analytics", [
 ])
 
 CONTACT = section("contact", "Contact form and email", [
-    p("When you use our [contact form](/contact), we process the name, email address and message you enter, together with the page the form was sent from. Our website server passes the message to **n8n**, a workflow tool we host ourselves, which forwards it to our mailbox. Your browser does not contact any third party while sending."),
+    p("When you use our [contact form](/contact), we process the name, email address and message you enter, together with the page the form was sent from. The message reaches us by email. Your browser does not contact any third party while sending."),
     p("**Legal basis**: Art. 6(1)(b) GDPR when your request concerns a contract or its preparation, otherwise Art. 6(1)(f) GDPR, our legitimate interest in answering enquiries. We keep enquiries as long as we need them to answer you and for as long as statutory retention periods require, then delete them."),
     p("The same applies when you write to us directly at [info@elecos.de](mailto:info@elecos.de)."),
 ])
@@ -91,11 +81,11 @@ CONTACT = section("contact", "Contact form and email", [
 EMBEDS = section("embeds", "Embedded content", [
     p("This website demonstrates a consent manager, so it deliberately contains embedded content that is blocked until you allow it:"),
     ul([
-        "**Google Maps** (Google Ireland Limited, Ireland) on this page, as a live demonstration further down.",
+        "**Google Maps** (Google Ireland Limited, Ireland) in the live demonstration on our homepage.",
         "**YouTube** and **Vimeo** videos in the documentation examples, using their privacy-enhanced modes.",
     ]),
     p("Nothing is loaded from those providers until you allow the service, either in the privacy settings or on the content itself. Once you do, your IP address and browser information reach the provider, which may set its own cookies and may transfer data to the USA. **Legal basis**: Art. 6(1)(a) GDPR and § 25(1) TDDDG, your consent, which you can withdraw at any time in the privacy settings."),
-    p("The services listed in our privacy settings include **demonstration entries** such as Google Analytics and Meta Pixel. They exist to show how the consent manager works. Selecting them loads no tracking code: this site runs none."),
+    p("The services listed in our privacy settings include **demonstration entries** such as Google Analytics and Meta Pixel. They exist to show how the consent manager works. Selecting them loads no tracking code: this site runs none. Two demonstration scripts write a line to your browser console when analytics is allowed, so we can verify that consent is honoured across pages."),
 ])
 
 PAYPAL = section("payments", "Voluntary support via PayPal", [
@@ -120,14 +110,10 @@ CHANGES = section("changes", "Changes to this policy", [
     p(f"We update this policy when the website changes. This version is from **{UPDATED}**."),
 ])
 
-DEMO = f"""
-<section id='demo' ws:label='Live Demonstration' {T('site-docs-section')}>
-  {h2('Live demonstration', 'demo')}
-  {p('The map below is a real Consent Gate. It stays blocked until you allow Google Maps, and it is the same mechanism this page describes. This page also carries two demonstration scripts that only write to the browser console, so we can test that consent survives navigation between pages.')}
-  {gate_fragment(service='google-maps', title='Google Maps', provider='Google Maps', embed=MAPS_EMBED)}
-  <HtmlEmbed ws:label='Managed Scripts (demo)' code={js(MANAGED_SCRIPTS)} />
-  <p {T('site-help')}>{txt('You can withdraw or change any choice at any time: ')}<button type='button' data-cmp-action='open-modal' {T('consent-link')}>{txt('privacy settings')}</button>{txt('.')}</p>
-</section>"""
+# The demo scripts render nothing: they are text/plain placeholders that only write
+# to the console when analytics is allowed. The end-to-end suite uses them to check
+# that consent survives client-side navigation to this page.
+DEMO_SCRIPTS = f"""<HtmlEmbed ws:label='Managed Scripts (demo)' code={js(MANAGED_SCRIPTS)} />"""
 
 
 def content():
@@ -142,7 +128,7 @@ def content():
         PAYPAL,
         RIGHTS,
         CHANGES,
-        DEMO,
+        DEMO_SCRIPTS,
     ])
 
 

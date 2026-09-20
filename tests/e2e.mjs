@@ -139,12 +139,11 @@ check("accept once is not persisted", cookie?.consents.youtube === false);
 await page.evaluate(() => (window.__spaMarker = true));
 await click("footer a[href='/privacy']");
 await page.waitForURL("**/privacy");
-await page.waitForSelector("[data-cmp-gate='google-maps']");
+await page.waitForSelector("main section#consent-log");
 await page.waitForTimeout(300);
 const spa = await page.evaluate(() => window.__spaMarker === true);
 check("navigation was client-side (SPA)", spa);
 check("notice stays closed after navigation", !(await visible("[data-cmp-notice]")));
-check("maps gate denied on new page", await visible("[data-cmp-gate='google-maps'] [data-cmp-gate-notice]"));
 check("managed script re-activated on new page", (await demoLog()).includes("analytics:loaded /privacy"));
 check("switches re-synced after remount", await page.evaluate(() =>
   document.querySelector("input[data-cmp-toggle='service:google-analytics']").checked &&
@@ -161,11 +160,12 @@ await page.waitForTimeout(1100);
 cookie = await consentCookie();
 check("accept all persisted", Object.values(cookie?.consents ?? {}).every(Boolean), JSON.stringify(cookie?.consents));
 check("modal closed after confirm delay", !(await visible("[data-cmp-modal] [data-cmp-dialog]")));
-check("maps gate granted without reload", await visible("[data-cmp-gate='google-maps'] iframe[src*='google.com/maps']"));
 
 await page.goBack();
 await page.waitForSelector("[data-cmp-gate='youtube']");
 await page.waitForTimeout(300);
+// the decision made on the other page applies to this page's gates without a reload
+check("maps gate granted without reload", await visible("[data-cmp-gate='google-maps'] iframe[src*='google.com/maps']"));
 await page.locator("[data-cmp-gate='youtube'] [data-cmp-gate-content] button").first().click();
 await page.waitForSelector("[data-cmp-gate='youtube'] iframe[src*='youtube-nocookie']", { timeout: 10000 }).catch(() => {});
 check("granted native video plays without overlay", (await visible("[data-cmp-gate='youtube'] iframe[src*='youtube-nocookie']")) && !(await visible("[data-cmp-gate='youtube'] [data-cmp-gate-notice]")));
@@ -650,7 +650,11 @@ await dc.close();
     const text = document.querySelector("main")?.innerText || "";
     return ["consentlog.nativecmp.com", "cmp_consent", "Rybbit", "Google Maps", "ELECOS"].every((needle) => text.includes(needle));
   }));
-  check("privacy policy: still demonstrates a gate and the managed scripts", (await xp.locator("[data-cmp-gate='google-maps']").count()) === 1 && await xp.evaluate(() => !!document.querySelector("script[type='text/plain'][data-cmp-service='google-analytics']")));
+  check("privacy policy: keeps the invisible demo scripts and shows no demo section", await xp.evaluate(() => {
+    const hasScripts = !!document.querySelector("script[type='text/plain'][data-cmp-service='google-analytics']");
+    const text = document.querySelector("main")?.innerText || "";
+    return hasScripts && !document.querySelector("[data-cmp-gate]") && !text.includes("Live demonstration") && !text.includes("n8n");
+  }));
   const sitemap = await (await xp.request.get(BASE + "/sitemap.xml")).text();
   check("seo: sitemap lists indexable pages only", ["/install", "/generator", "/examples", "/docs", "/contact", "/privacy"].every((path) => sitemap.includes(path + "</loc>")) && !sitemap.includes("/consent-preview<"));
 
