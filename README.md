@@ -11,7 +11,7 @@ It blocks third-party scripts, embeds and Webstudio's YouTube and Vimeo componen
 - **Engine**: one script in Project Settings → Custom Code (~7 KB gzipped). It runs in `<head>` before the page paints.
 - **UI**: the notice and preferences modal are a shared **Consent Manager** Slot made of regular Webstudio elements, so you design them in the Builder.
 - **Data**: the `consentServices` and `consentTranslations` variables hold the services, cookies and texts per language.
-- **Proof of consent**: each decision gets a random consent ID, shown in the dialog. Set `consentLog` to your own [consent log](https://github.com/zehjotkah/native-cmp-consent-log) to keep a record, without IP addresses.
+- **Proof of consent**: each decision gets a random consent ID, shown in the dialog. Set `consentLog` to your own [consent log](log/) to keep a record, without IP addresses.
 
 ## Install
 

@@ -7366,8 +7366,8 @@
  },
  "consentLog": {
   "setting": "consentLog",
-  "deployUrl": "https://deploy.workers.cloudflare.com/?url=https://github.com/zehjotkah/native-cmp-consent-log",
-  "source": "https://github.com/zehjotkah/native-cmp-consent-log",
+  "deployUrl": "https://deploy.workers.cloudflare.com/?url=https://github.com/zehjotkah/native-cmp/tree/main/log",
+  "source": "https://github.com/zehjotkah/native-cmp/tree/main/log",
   "docs": "https://nativecmp.com/docs#proof-of-consent",
   "stores": [
    "consent id",

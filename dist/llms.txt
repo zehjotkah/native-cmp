@@ -18,7 +18,7 @@ The engine runs from Project Settings → Custom Code; the notice and preference
 - [Documentation](https://nativecmp.com/docs): installation, configuration, services, languages, blocking scripts and embeds, Consent Gates, attributes, JavaScript API, Consent Mode, design tokens
 - [Starter project](https://p-efd5ae31-66d4-4782-b4df-f4715407ce01.apps.webstudio.is/?authToken=75f8486f-a6c5-431a-a442-4b102d1fbbb8&mode=preview): a Webstudio project with the engine, the Consent Manager, a Consent preview page and example gates already set up, to clone for a new site ([live demo](https://starter.nativecmp.com))
 
-- [Consent log](https://github.com/zehjotkah/native-cmp-consent-log): optional Cloudflare Worker for proof of consent, deployed into the user's own account
+- [Consent log](https://github.com/zehjotkah/native-cmp/tree/main/log): optional Cloudflare Worker for proof of consent, deployed into the user's own account
 
 ## Source
 
