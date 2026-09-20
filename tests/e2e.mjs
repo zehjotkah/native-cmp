@@ -646,9 +646,13 @@ await dc.close();
     return faq.mainEntity.length === visible.length && faq.mainEntity.every((q, i) => q.name === visible[i]);
   }, ld));
   const privacy = await xp.goto(BASE + "/privacy", { waitUntil: "domcontentloaded" });
-  check("seo: placeholder privacy page and 404 are noindex", (await xp.locator("meta[name='robots']").getAttribute("content")).includes("noindex") && privacy.status() === 200);
+  check("privacy policy: indexable, names the consent log and the analytics", privacy.status() === 200 && (await xp.locator("meta[name='robots']").count()) === 0 && await xp.evaluate(() => {
+    const text = document.querySelector("main")?.innerText || "";
+    return ["consentlog.nativecmp.com", "cmp_consent", "Rybbit", "Google Maps", "ELECOS"].every((needle) => text.includes(needle));
+  }));
+  check("privacy policy: still demonstrates a gate and the managed scripts", (await xp.locator("[data-cmp-gate='google-maps']").count()) === 1 && await xp.evaluate(() => !!document.querySelector("script[type='text/plain'][data-cmp-service='google-analytics']")));
   const sitemap = await (await xp.request.get(BASE + "/sitemap.xml")).text();
-  check("seo: sitemap lists indexable pages only", ["/install", "/generator", "/examples", "/docs", "/contact"].every((path) => sitemap.includes(path + "</loc>")) && !sitemap.includes("/privacy<") && !sitemap.includes("/consent-preview<"));
+  check("seo: sitemap lists indexable pages only", ["/install", "/generator", "/examples", "/docs", "/contact", "/privacy"].every((path) => sitemap.includes(path + "</loc>")) && !sitemap.includes("/consent-preview<"));
 
   // theme knobs: overriding --cmp-* variables restyles the consent UI
   const themed = await xc.newPage();

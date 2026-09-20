@@ -84,9 +84,8 @@ PAGES = {
     "6ZWZC6kYCVoWV1mVi8U1e": dict(
         path="/privacy",
         title="Privacy policy – Native CMP",
-        description="How Native CMP handles personal data.",
+        description="How nativecmp.com handles your data: one consent cookie, cookieless analytics on our own server, a consent log without IP addresses, and embedded content blocked until you allow it.",
         image="home",
-        exclude=True,
     ),
     "oVOM84zbCgkvIXFcFQCMu": dict(
         path="/*",
@@ -211,6 +210,7 @@ STRUCTURED = {
         "@type": "TechArticle", "headline": "Native CMP documentation", "url": SITE + "/docs",
         "about": {"@id": SITE + "/#software"}, "publisher": {"@id": SITE + "/#organization"}, "inLanguage": "en"}})]),
     "qSsMOvYn_n-SQIoP-B4u3": lambda: graph([page_node("qSsMOvYn_n-SQIoP-B4u3", "ContactPage", {"inLanguage": "en"})]),
+    "6ZWZC6kYCVoWV1mVi8U1e": lambda: graph([page_node("6ZWZC6kYCVoWV1mVi8U1e", "WebPage", {"inLanguage": "en"})]),
 }
 
 
