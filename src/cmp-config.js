@@ -7,6 +7,8 @@ window.cmpConfig = {
   mustConsent: false, // true: open the preferences modal instead of the notice
   noNotice: false, // true: contextual only, no notice on page load (gates, links and API ask for consent)
   dataLayer: false, // true: push { event: "cmp_consent" } to window.dataLayer
+  // proof of consent: your own consent log (no IP addresses), see nativecmp.com/docs#proof-of-consent
+  // consentLog: "https://consentlog.example.com",
   // Google Consent Mode v2: map consent types to service names
   // consentMode: {
   //   analytics_storage: ["google-analytics"],

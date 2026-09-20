@@ -352,6 +352,22 @@ TOKENS = {
             "background-color": "var(--background-secondary)",
         }
     },
+    # consent ID: proof of consent, shown in the dialog once a decision was made
+    "consent-id": {
+        "base": {
+            **margin0(),
+            "flex-grow": "1",
+            "flex-shrink": "1",
+            "flex-basis": "100%",
+            "display": "flex",
+            "flex-wrap": "wrap",
+            "align-items": "baseline",
+            "column-gap": "var(--gap-xs)",
+            "font-size": "12px",
+            "color": "var(--foreground-secondary)",
+        }
+    },
+    "consent-id-value": {"base": {"font-family": "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace", "font-size": "11px", "word-break": "break-all"}},
     # purposes & services ------------------------------------------------------
     "consent-purposes": {"base": {**margin0(), **padding("0"), "list-style-type": "none", "display": "grid"}},
     "consent-purpose": {

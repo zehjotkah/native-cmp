@@ -19,6 +19,7 @@ DOES = [
     ("Configures cookies and texts", "Adds each service with its cookies, which are deleted when visitors decline, and writes purposes and descriptions in your site’s languages."),
     ("Updates your privacy policy", "Adds a section for every service with provider, purpose, cookies and legal basis, in your policy’s design, ready for you to review."),
     ("Matches your design", "Maps the banner and dialog to your colors, radii and fonts, then compares them with your pages on desktop and mobile."),
+    ("Offers proof of consent", "Explains the optional consent log, deploys it to your own Cloudflare account if you want one, and adds it to your privacy policy section. No IP addresses, no data leaving your account."),
     ("Checks its work", "Verifies bindings, confirms nothing loads early and reports every change. It asks before changing anything, and publishing stays your decision."),
 ]
 

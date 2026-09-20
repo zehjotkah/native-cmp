@@ -41,7 +41,7 @@ def build():
     config = (SRC / "cmp-config.js").read_text().strip()
     css = minify_css((SRC / "cmp-critical.css").read_text())
     engine = minify_js(SRC / "cmp-engine.js")
-    version = re.search(r'version: "([^"]+)"', (SRC / "cmp-engine.js").read_text()).group(1)
+    version = re.search(r'var VERSION = "([^"]+)"', (SRC / "cmp-engine.js").read_text()).group(1)
     head = "\n".join(
         [
             "<!-- Native CMP: configuration -->",

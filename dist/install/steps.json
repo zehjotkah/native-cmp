@@ -1,6 +1,6 @@
 {
  "name": "Native CMP",
- "engineVersion": "1.2.1",
+ "engineVersion": "1.3.0",
  "minimumCliVersion": "0.298.0",
  "docs": "https://nativecmp.com/install.txt",
  "mobileBreakpoint": {
@@ -4485,6 +4485,143 @@
    ]
   },
   {
+   "name": "consent-id",
+   "declarations": [
+    {
+     "property": "marginTop",
+     "value": {
+      "type": "unit",
+      "unit": "number",
+      "value": 0
+     }
+    },
+    {
+     "property": "marginRight",
+     "value": {
+      "type": "unit",
+      "unit": "number",
+      "value": 0
+     }
+    },
+    {
+     "property": "marginBottom",
+     "value": {
+      "type": "unit",
+      "unit": "number",
+      "value": 0
+     }
+    },
+    {
+     "property": "marginLeft",
+     "value": {
+      "type": "unit",
+      "unit": "number",
+      "value": 0
+     }
+    },
+    {
+     "property": "display",
+     "value": {
+      "type": "keyword",
+      "value": "flex"
+     }
+    },
+    {
+     "property": "flexWrap",
+     "value": {
+      "type": "keyword",
+      "value": "wrap"
+     }
+    },
+    {
+     "property": "alignItems",
+     "value": {
+      "type": "keyword",
+      "value": "baseline"
+     }
+    },
+    {
+     "property": "columnGap",
+     "value": {
+      "type": "var",
+      "value": "cmp-gap-xs"
+     }
+    },
+    {
+     "property": "fontSize",
+     "value": {
+      "type": "unit",
+      "unit": "px",
+      "value": 12
+     }
+    },
+    {
+     "property": "color",
+     "value": {
+      "type": "var",
+      "value": "cmp-text-muted"
+     }
+    },
+    {
+     "property": "flexGrow",
+     "value": {
+      "type": "unit",
+      "unit": "number",
+      "value": 1
+     }
+    },
+    {
+     "property": "flexShrink",
+     "value": {
+      "type": "unit",
+      "unit": "number",
+      "value": 1
+     }
+    },
+    {
+     "property": "flexBasis",
+     "value": {
+      "type": "unit",
+      "unit": "%",
+      "value": 100
+     }
+    }
+   ]
+  },
+  {
+   "name": "consent-id-value",
+   "declarations": [
+    {
+     "property": "fontFamily",
+     "value": {
+      "type": "fontFamily",
+      "value": [
+       "ui-monospace",
+       "SFMono-Regular",
+       "Menlo",
+       "Consolas",
+       "monospace"
+      ]
+     }
+    },
+    {
+     "property": "fontSize",
+     "value": {
+      "type": "unit",
+      "unit": "px",
+      "value": 11
+     }
+    },
+    {
+     "property": "wordBreak",
+     "value": {
+      "type": "keyword",
+      "value": "break-all"
+     }
+    }
+   ]
+  },
+  {
    "name": "consent-gate",
    "declarations": [
     {
@@ -5398,7 +5535,7 @@
    "is-consent-button-secondary": "Outlined button colors and hover"
   }
  },
- "customCode": "<!-- Native CMP: configuration -->\n<script>\nwindow.cmpConfig = {\n  storage: \"cookie\", // \"cookie\" or \"localStorage\"\n  storageName: \"cmp_consent\",\n  cookieExpiresAfterDays: 365,\n  cookieDomain: \"\", // \".example.com\" shares consent across subdomains\n  default: false, // default for services without \"default\" in the consentPurposes variable\n  mustConsent: false, // true: open the preferences modal instead of the notice\n  noNotice: false, // true: contextual only, no notice on page load (gates, links and API ask for consent)\n  dataLayer: false, // true: push { event: \"cmp_consent\" } to window.dataLayer\n  // Google Consent Mode v2: map consent types to service names\n  // consentMode: {\n  //   analytics_storage: [\"google-analytics\"],\n  //   ad_storage: [\"google-ads\"],\n  //   ad_user_data: [\"google-ads\"],\n  //   ad_personalization: [\"google-ads\"],\n  // },\n};\n</script>\n<style data-cmp-critical>html[data-cmp]:not([data-cmp-open=\"notice\"]) [data-cmp-notice]:not([data-cmp-preview] *),html[data-cmp]:not([data-cmp-open=\"modal\"]) [data-cmp-modal]:not([data-cmp-preview] *),html[data-cmp-confirmed=\"true\"] [data-cmp-if~=\"unconfirmed\"],html[data-cmp-confirmed=\"false\"]:not([data-cmp-mode=\"contextual\"]) [data-cmp-if~=\"confirmed\"],html[data-cmp]:not([data-cmp-changed]) [data-cmp-if~=\"changed\"],[data-cmp-gate]:not([data-cmp-state=\"granted\"]):not([data-cmp-gate-mode=\"interaction\"]) [data-cmp-gate-content],[data-cmp-gate][data-cmp-state=\"granted\"] [data-cmp-gate-notice],[data-cmp-gate][data-cmp-gate-mode=\"interaction\"]:not([data-cmp-requested]) [data-cmp-gate-notice],:is(iframe,img,video,audio,embed,object)[data-cmp-service]:not([data-cmp-state=\"granted\"]){display: none !important}html[data-cmp-open=\"modal\"]{overflow: hidden}[data-cmp-if][data-cmp-hidden]{display: none !important}</style>\n<script data-cmp-engine=\"1.2.1\">(function(){\"use strict\";if(window.cmp&&window.cmp.__engine)return;var c=document,E=c.documentElement,o=l({storage:\"cookie\",storageName:\"cmp_consent\",cookieDomain:\"\",cookiePath:\"/\",cookieExpiresAfterDays:365,default:!1,mustConsent:!1,noNotice:!1,confirmDelay:800,consentMode:null,consentModeDefaults:null,dataLayer:!1,fallbackLanguage:\"\",debug:!1},window.cmpConfig||{});function l(t){for(var e=1;e<arguments.length;e++){var r=arguments[e];if(r)for(var a in r)Object.prototype.hasOwnProperty.call(r,a)&&(t[a]=r[a])}return t}function gt(){o.debug&&window.console&&console.debug.apply(console,[\"[cmp]\"].concat([].slice.call(arguments)))}function F(t){return(t||\"\").split(/\\s+/).filter(Boolean)}function B(t,e){var r=t.getAttribute(e);if(!(r===null||r===\"\"))return r===\"true\"}function S(t,e,r){for(var a=(r||c).querySelectorAll(t),n=0;n<a.length;n++)e(a[n])}function Ut(t){return t.replace(/[-[\\]/{}()*+?.\\\\^$|]/g,\"\\\\$&\")}function vt(t){return t.nodeType===1&&t.hasAttribute(\"data-cmp-internal\")}function j(){try{return c.cookie||\"\"}catch(t){return\"\"}}function ht(t){try{c.cookie=t}catch(e){}}function Jt(t){for(var e=j()?j().split(\";\"):[],r=0;r<e.length;r++){var a=e[r].indexOf(\"=\");if(!(a<0)&&e[r].slice(0,a).trim()===t)return e[r].slice(a+1).trim()}return null}function Kt(){return(j()?j().split(\";\"):[]).map(function(t){return t.split(\"=\")[0].trim()}).filter(Boolean)}var at={get:function(){try{var t=o.storage===\"localStorage\"?localStorage.getItem(o.storageName):Jt(o.storageName);if(!t)return null;var e=JSON.parse(decodeURIComponent(t));return e&&typeof e==\"object\"?e:null}catch(r){return null}},set:function(t){var e=encodeURIComponent(JSON.stringify(t));if(o.storage===\"localStorage\"){try{localStorage.setItem(o.storageName,e)}catch(a){}return}var r=new Date(Date.now()+o.cookieExpiresAfterDays*864e5).toUTCString();ht(o.storageName+\"=\"+e+\"; expires=\"+r+\"; path=\"+(o.cookiePath||\"/\")+(o.cookieDomain?\"; domain=\"+o.cookieDomain:\"\")+\"; SameSite=Lax\"+(location.protocol===\"https:\"?\"; Secure\":\"\"))},remove:function(){if(o.storage===\"localStorage\"){try{localStorage.removeItem(o.storageName)}catch(t){}return}bt(o.storageName,o.cookieDomain?[o.cookieDomain]:void 0)}};function $t(){for(var t=location.hostname,e=[\"\",t,\".\"+t],r=t.split(\".\"),a=1;a<r.length-1;a++)e.push(\".\"+r.slice(a).join(\".\"));return e}function bt(t,e){var r=[\"/\",location.pathname];(e||$t()).forEach(function(a){r.forEach(function(n){ht(t+\"=; Max-Age=-99999999; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=\"+n+(a?\"; domain=\"+a:\"\"))})})}var U={};function Ft(t,e){return(U[t]=U[t]||[]).push(e),function(){At(t,e)}}function At(t,e){U[t]=(U[t]||[]).filter(function(r){return r!==e})}function C(t,e){(U[t]||[]).slice().forEach(function(r){try{r(e)}catch(a){console.error(a)}});try{c.dispatchEvent(new CustomEvent(\"cmp:\"+t,{detail:e}))}catch(r){}}var s={},g=[],yt=\"\",z=!1,Et=!1,b=at.get(),f=b&&b.consents?l({},b.consents):{},M=l({},f),v=!!b,H=!1,k={},St={},Ct={},Q={},kt={},u={notice:!1,modal:!1,confirming:!1,opener:null},jt=0;function nt(t){return t.required?!0:t.default!==void 0?t.default:!!o.default}function O(t){var e=s[t];if(e&&e.required||k[t])return!0;if(!f[t])return!1;var r=e?e.optOut:!1;return v||!!r}function it(t){return t&&t.dependsOn?t.dependsOn:[]}function T(t,e){var r=s[t];r&&r.required&&(e=!0);var a=!!f[t]!==e;return f[t]=e,e?it(r).forEach(function(n){f[n]||T(n,!0)}):g.forEach(function(n){it(s[n]).indexOf(t)!==-1&&f[n]&&T(n,!1)}),a}function zt(t){var e=0;return g.forEach(function(r){var a=s[r];a.contextualOnly||T(r,a.required||t)&&e++}),e}function Ht(){if(b){var t=!0;Object.keys(f).forEach(function(e){s[e]||delete f[e]}),g.forEach(function(e){e in f||(f[e]=nt(s[e]),t=!1)}),v=t,H=!t,M=l({},f)}}function ot(t){var e={};Object.keys(f).forEach(function(r){M[r]!==f[r]&&(e[r]=f[r])}),b={consents:l({},f),timestamp:new Date().toISOString(),version:1},at.set(b),v=!0,H=!1,k={},M=l({},f),o.dataLayer&&(window.dataLayer=window.dataLayer||[],window.dataLayer.push({event:\"cmp_consent\",cmp_type:t,cmp_consents:l({},f)})),C(\"save\",{type:t,consents:l({},f),changes:e})}function Qt(){var t=c.querySelectorAll(\"[data-cmp-service-def]\"),e=c.querySelectorAll(\"[data-cmp-service-item]\");if(!t.length&&!e.length)return!1;var r={},a=[];function n(p,y){if(!p)return null;r[p]||(a.push(p),r[p]={name:p,purposes:[],required:!1,default:void 0,optOut:!1,onlyOnce:!1,contextualOnly:!1,cookies:[],dependsOn:[]});var m=r[p];return y&&!m.defined&&(m.defined=!0,m.required=B(y,\"data-cmp-required\")||!1,m.default=B(y,\"data-cmp-default\"),m.optOut=B(y,\"data-cmp-opt-out\")||!1,m.onlyOnce=B(y,\"data-cmp-only-once\")||!1,m.contextualOnly=B(y,\"data-cmp-contextual-only\")||!1,m.cookies=F(y.getAttribute(\"data-cmp-cookies\")),m.dependsOn=F(y.getAttribute(\"data-cmp-depends-on\"))),m}function i(p,y){y.forEach(function(m){m&&p.purposes.indexOf(m)===-1&&p.purposes.push(m)})}for(var d=0;d<t.length;d++){var x=t[d],A=n(x.getAttribute(\"data-cmp-service-def\"),x);if(A){var rt=x.closest(\"[data-cmp-purpose]\");i(A,F(x.getAttribute(\"data-cmp-purposes\")).concat(rt?[rt.getAttribute(\"data-cmp-purpose\")]:[]))}}for(var L=0;L<e.length;L++){var P=n(e[L].getAttribute(\"data-cmp-service-item\")),G=e[L].closest(\"[data-cmp-purpose]\");P&&G&&i(P,[G.getAttribute(\"data-cmp-purpose\")])}a.forEach(function(p){delete r[p].defined});var W=JSON.stringify(r);return W===yt?!1:(yt=W,s=r,g=a,Et=!0,b?Ht():(g.forEach(function(p){p in f||(f[p]=nt(s[p]))}),M=l({},f)),gt(\"services\",s),!0)}var Vt=[\"src\",\"srcset\",\"href\",\"poster\",\"data\"];function Ot(t){var e=t.getAttribute(\"data-src\")||t.getAttribute(\"src\");if(e){if(kt[e])return null;kt[e]=!0}for(var r=c.createElement(\"script\"),a=0;a<t.attributes.length;a++){var n=t.attributes[a];/^(type|src|data-src|data-type|data-cmp-state|data-cmp-service|data-cmp-on|data-cmp-id)$/.test(n.name)||r.setAttribute(n.name,n.value)}var i=t.getAttribute(\"data-type\");return i&&(r.type=i),t.nonce&&(r.nonce=t.nonce),e?r.src=e:r.text=t.text||t.textContent||\"\",r.setAttribute(\"data-cmp-internal\",\"\"),r.setAttribute(\"data-cmp-for\",t.getAttribute(\"data-cmp-service\")||\"\"),c.head.appendChild(r),r}function J(t){var e=t.getAttribute(\"data-cmp-id\");return e||(e=\"cmp\"+ ++jt,t.setAttribute(\"data-cmp-id\",e)),e}function ct(t){S('[data-cmp-generated=\"'+J(t)+'\"]',function(e){e.parentNode&&e.parentNode.removeChild(e)})}function V(t,e){return t.nodeType===1&&(t.setAttribute(\"data-cmp-generated\",J(e)),t.setAttribute(\"data-cmp-internal\",\"\")),t}function wt(t){var e=t.content.cloneNode(!0),r=[];S(\"script\",function(i){r.push(i),i.parentNode.removeChild(i)},e);var a=[].slice.call(e.childNodes),n=t;a.forEach(function(i){i.nodeType===3&&!i.textContent.trim()||i.nodeType===1&&(V(i,t),n.parentNode.insertBefore(i,n.nextSibling),n=i)}),r.forEach(function(i){var d=Ot(i);d&&V(d,t)})}var ut=typeof WeakMap==\"function\"?new WeakMap:null;function Xt(t){var e=t.parentNode;if(!ut||!e)return null;var r=ut.get(e);r||ut.set(e,r={});for(var a=0,n=t,i=t.getAttribute(\"data-cmp-service\");n=n.previousElementSibling;)n.tagName===t.tagName&&n.getAttribute(\"data-cmp-service\")===i&&a++;var d=[t.tagName,i,t.getAttribute(\"data-cmp-on\")||\"\",a].join(\"|\");return r[d]||(r[d]={})}function Yt(t,e){var r=t.getAttribute(\"data-cmp-service\"),a=s[r],n=e?\"granted\":\"denied\",i=t.tagName,d=Xt(t)||{};d.id&&!t.hasAttribute(\"data-cmp-id\")&&t.setAttribute(\"data-cmp-id\",d.id);var x=t.getAttribute(\"data-cmp-state\")||d.state;if(t.getAttribute(\"data-cmp-state\")!==n&&t.setAttribute(\"data-cmp-state\",n),d.state=n,d.id=J(t),x===n){i===\"TEMPLATE\"&&e&&!c.querySelector('[data-cmp-generated=\"'+d.id+'\"]')&&wt(t),i!==\"SCRIPT\"&&i!==\"TEMPLATE\"&&i!==\"LINK\"&&xt(t,e);return}if(i===\"SCRIPT\"){var A=t.getAttribute(\"data-cmp-on\")||\"accept\",rt=A===\"decline\"?!e:e;if(!rt){e||ct(t);return}if(A===\"accept\"&&a&&a.onlyOnce){if(Q[r])return;Q[r]=!0}var L=Ot(t);L&&A===\"accept\"&&V(L,t);return}if(i===\"TEMPLATE\"){if(ct(t),e){if(a&&a.onlyOnce&&Q[r+\":\"+J(t)])return;Q[r+\":\"+J(t)]=!0,wt(t)}return}if(i===\"LINK\"){if(ct(t),e&&t.getAttribute(\"data-href\")){for(var P=c.createElement(\"link\"),G=0;G<t.attributes.length;G++){var W=t.attributes[G];/^(href|data-href|data-cmp-state|data-cmp-service|data-cmp-id)$/.test(W.name)||P.setAttribute(W.name,W.value)}P.href=t.getAttribute(\"data-href\"),c.head.appendChild(V(P,t))}return}xt(t,e)}function xt(t,e){var r=t.tagName,a=!1;if(Vt.forEach(function(i){var d=t.getAttribute(\"data-\"+i);d!==null&&(e?t.getAttribute(i)!==d&&(t.setAttribute(i,d),a=!0):r===\"IFRAME\"&&i===\"src\"?t.hasAttribute(\"src\")&&t.getAttribute(\"src\")!==\"about:blank\"&&(t.setAttribute(\"src\",\"about:blank\"),a=!0):t.hasAttribute(i)&&(t.removeAttribute(i),a=!0))}),a&&(r===\"SOURCE\"||r===\"TRACK\")){var n=t.parentElement;n&&typeof n.load==\"function\"&&n.load()}}function Zt(t){var e=s[t];if(!(!e||!e.cookies.length)){var r=Kt();e.cookies.forEach(function(a){var n=a.charAt(0)===\"^\"?new RegExp(a):new RegExp(\"^\"+Ut(a)+\"$\");r.forEach(function(i){i!==o.storageName&&n.test(i)&&(gt(\"deleting cookie\",i),bt(i))})})}}function D(){g.forEach(function(t){Ct[t]||(Ct[t]=!0,C(\"init\",{service:s[t]}));var e=O(t);St[t]!==e&&(St[t]=e,e||Zt(t),C(\"service\",{name:t,consent:e,service:s[t]}))}),S(\"[data-cmp-service]\",function(t){vt(t)||Yt(t,O(t.getAttribute(\"data-cmp-service\")))}),Mt()}var qt=\"\";function Nt(){window.dataLayer=window.dataLayer||[],window.dataLayer.push(arguments)}function Lt(t){var e={};return Object.keys(o.consentMode).forEach(function(r){var a=[].concat(o.consentMode[r]),n=a.some(function(i){return t?O(i):!1});e[r]=n?\"granted\":\"denied\"}),e}function te(){if(o.consentMode){var t=l(Lt(!1),{wait_for_update:500},o.consentModeDefaults||{});Nt(\"consent\",\"default\",t),b&&Mt()}}function Mt(){if(o.consentMode){var t=Lt(!0),e=JSON.stringify(t);e!==qt&&(qt=e,Nt(\"consent\",\"update\",t))}}function q(t,e){e===null||e===!1?E.hasAttribute(t)&&E.removeAttribute(t):E.getAttribute(t)!==String(e)&&E.setAttribute(t,String(e))}function Tt(){return!!o.noNotice&&!o.mustConsent}function h(){q(\"data-cmp\",z?\"ready\":\"loading\"),q(\"data-cmp-mode\",Tt()?\"contextual\":null),q(\"data-cmp-open\",u.modal?\"modal\":u.notice?\"notice\":null),q(\"data-cmp-confirmed\",v?\"true\":\"false\"),q(\"data-cmp-changed\",H?\"true\":null),q(\"data-cmp-confirming\",u.confirming?\"true\":null)}function X(t){return g.filter(function(e){return s[e].purposes.indexOf(t)!==-1})}function st(t,e){var r=e.filter(function(d){return!s[d].required}),a=r.filter(function(d){return f[d]}).length,n=r.length===0||a===r.length,i=a>0&&a<r.length;t.checked!==n&&(t.checked=n),t.indeterminate!==i&&(t.indeterminate=i),t.disabled!==(r.length===0)&&(t.disabled=r.length===0),i?t.setAttribute(\"aria-checked\",\"mixed\"):t.getAttribute(\"aria-checked\")===\"mixed\"&&t.removeAttribute(\"aria-checked\")}function w(){S(\"input[data-cmp-toggle]\",function(t){var e=t.getAttribute(\"data-cmp-toggle\").split(\":\"),r=e[0],a=e.slice(1).join(\":\");r===\"service\"&&s[a]?st(t,[a]):r===\"purpose\"?st(t,X(a)):r===\"all\"&&st(t,g)}),S(\"[data-cmp-purpose]\",function(t){var e=X(t.getAttribute(\"data-cmp-purpose\")),r=e.length>0&&e.every(function(a){return s[a].required});t.setAttribute(\"data-cmp-required\",r?\"true\":\"false\")})}function I(){S(\"[data-cmp-gate],[data-cmp-status]\",function(t){var e=t.getAttribute(\"data-cmp-gate\")||t.getAttribute(\"data-cmp-status\"),r=O(e)?\"granted\":\"denied\",a=t.getAttribute(\"data-cmp-state\");a!==r&&(t.setAttribute(\"data-cmp-state\",r),a===\"granted\"&&t.getAttribute(\"data-cmp-gate-mode\")===\"interaction\"&&S(\"[data-cmp-gate-content] iframe\",function(n){n.getAttribute(\"src\")!==\"about:blank\"&&n.setAttribute(\"src\",\"about:blank\")},t))})}var ee={required:1,\"not-required\":1,\"opt-out\":1,granted:1,denied:1};function re(t){var e=t.closest(\"[data-cmp-service-item],[data-cmp-purpose],[data-cmp-status],[data-cmp-gate]\");if(!e)return null;var r;e.hasAttribute(\"data-cmp-service-item\")?r=[e.getAttribute(\"data-cmp-service-item\")]:e.hasAttribute(\"data-cmp-purpose\")?r=X(e.getAttribute(\"data-cmp-purpose\")):r=[e.getAttribute(\"data-cmp-status\")||e.getAttribute(\"data-cmp-gate\")];var a=r.filter(function(n){return s[n]});return{required:a.length>0&&a.every(function(n){return s[n].required}),\"opt-out\":a.some(function(n){return s[n].optOut&&!s[n].required}),granted:r.length>0&&r.every(O)}}function K(){S(\"[data-cmp-if]\",function(t){var e=F(t.getAttribute(\"data-cmp-if\")).filter(function(n){return ee[n]});if(e.length){var r=re(t),a=!!r&&e.every(function(n){return n===\"not-required\"?!r.required:n===\"denied\"?!r.granted:r[n]});a===t.hasAttribute(\"data-cmp-hidden\")&&(a?t.removeAttribute(\"data-cmp-hidden\"):t.setAttribute(\"data-cmp-hidden\",\"\"))}})}var Y=c.createElement(\"style\");Y.setAttribute(\"data-cmp-language\",\"\"),(c.head||E).appendChild(Y);function ft(t){return String(t||\"\").toLowerCase().replace(/_/g,\"-\").replace(/[^a-z0-9-]/g,\"\")}function ae(){var t=ft(E.getAttribute(\"lang\")),e=t.split(\"-\")[0],r=t&&t!==e?[t,e]:[e];if(c.readyState===\"loading\")return r;var a=[];if(S(\"[data-cmp-lang]\",function(x){var A=ft(x.getAttribute(\"data-cmp-lang\"));A&&a.indexOf(A)===-1&&a.push(A)}),!a.length)return r;for(var n=0;n<r.length;n++)if(a.indexOf(r[n])!==-1)return[r[n]];for(var i=0;i<a.length;i++)if(a[i].split(\"-\")[0]===e)return[a[i]];var d=ft(o.fallbackLanguage);return[a.indexOf(d)!==-1?d:a[0]]}function Z(){var t=ae().filter(Boolean),e=\"[data-cmp-lang]\"+t.map(function(r){return':not([data-cmp-lang=\"'+r+'\" i])'}).join(\"\")+\"{display:none!important}\";Y.textContent!==e&&(Y.textContent=e),q(\"data-cmp-language\",t[0]||null)}var ne='a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),summary,[tabindex]:not([tabindex=\"-1\"])';function Dt(t){return!!(t.offsetWidth||t.offsetHeight||t.getClientRects().length)}function dt(){for(var t=c.querySelectorAll(\"[data-cmp-modal]:not([data-cmp-preview] *)\"),e=null,r=0;r<t.length;r++){var a=t[r].querySelector(\"[data-cmp-dialog]\")||t[r];if(Dt(a))return a;e=e||a}return e}function tt(){var t=dt();if(!(!t||t.contains(c.activeElement))){t.hasAttribute(\"tabindex\")||t.setAttribute(\"tabindex\",\"-1\");try{t.focus({preventScroll:!0})}catch(e){t.focus()}}}var lt=!1;function $(){if(lt=!1,c.readyState===\"loading\"){h(),Z(),I();return}var t=Qt();z?(t&&et(),D()):(z=!0,Et||Object.keys(f).forEach(function(e){s[e]||(s[e]={name:e,purposes:[],cookies:[],dependsOn:[]},g.push(e))}),et(),D(),C(\"ready\",Bt.getConsents())),h(),Z(),I(),w(),K(),K(),u.modal&&tt()}function ie(){lt||(lt=!0,Promise.resolve().then($))}function et(){v||(o.mustConsent?u.modal=!0:o.noNotice||(u.notice=!0))}function It(t){u.opener=t||c.activeElement,u.modal=!0,h(),w(),tt(),C(\"modal\",{open:!0})}function Rt(){if(u.modal&&!(o.mustConsent&&!v)){v&&(f=l({},M),u.notice=!1),u.modal=!1,h(),w();var t=u.opener;u.opener=null,t&&t.isConnected&&typeof t.focus==\"function\"&&t.focus(),C(\"modal\",{open:!1})}}function pt(){var t=u.modal,e=u.opener;u.notice=!1,u.modal=!1,u.confirming=!1,u.opener=null,h(),t&&(e&&e.isConnected&&typeof e.focus==\"function\"&&e.focus(),C(\"modal\",{open:!1}))}function R(t,e,r){var a=u.modal&&r&&r.closest&&r.closest(\"[data-cmp-modal]\"),n=v,i=t===null?0:zt(t);ot(e),D(),I(),w(),K(),t!==null&&!n&&(a||o.mustConsent)&&i>0&&o.confirmDelay>0?(u.confirming=!0,h(),setTimeout(pt,o.confirmDelay)):pt()}var _=typeof WeakMap==\"function\"?new WeakMap:null;function oe(t){var e=t&&t.closest&&t.closest('[data-cmp-gate][data-cmp-gate-mode=\"interaction\"]');return!e||O(e.getAttribute(\"data-cmp-gate\"))||t.closest(\"[data-cmp-gate-notice]\")?null:t.closest(\"[data-cmp-gate-content]\")?e:null}function ce(t,e){_&&_.set(t,e),t.setAttribute(\"data-cmp-requested\",\"\");var r=t.querySelector(\"[data-cmp-gate-notice]\"),a=r&&r.querySelector(\"button, a[href]\");if(a)try{a.focus({preventScroll:!0})}catch(n){a.focus()}C(\"gate\",{name:t.getAttribute(\"data-cmp-gate\"),requested:!0})}function mt(t,e){if(!(!t||!t.hasAttribute(\"data-cmp-requested\"))){t.removeAttribute(\"data-cmp-requested\");var r=_&&_.get(t);_&&_.delete(t),!(!r||!r.isConnected)&&(e?setTimeout(function(){r.click()},0):typeof r.focus==\"function\"&&r.focus())}}[\"click\",\"auxclick\"].forEach(function(t){c.addEventListener(t,function(e){var r=oe(e.target);r&&(e.preventDefault(),e.stopImmediatePropagation(),ce(r,e.target.closest(\"button, a, [role='button']\")||e.target))},!0)});function _t(t,e,r){if(t){if(T(t,!0),e&&(v||Tt())){var a=l({},k);ot(\"contextual-accept\"),k=a,delete k[t]}else k[t]=!0,it(s[t]).forEach(function(i){k[i]=!0});D(),h(),I(),w(),K();var n=r&&r.closest&&r.closest(\"[data-cmp-gate]\");n&&mt(n,!0)}}function Pt(){at.remove(),b=null,f={},g.forEach(function(t){f[t]=nt(s[t])}),M=l({},f),v=!1,H=!1,k={},D(),u.modal=!1,et(),h(),I(),w(),K()}function Gt(t){var e=t.getAttribute(\"data-cmp-name\");if(e)return e;var r=t.closest(\"[data-cmp-gate]\");return r?r.getAttribute(\"data-cmp-gate\"):null}c.addEventListener(\"click\",function(t){var e=t.target.closest&&t.target.closest(\"[data-cmp-action]\");if(e){var r=e.getAttribute(\"data-cmp-action\");switch((e.tagName===\"A\"||e.tagName===\"BUTTON\")&&t.preventDefault(),r){case\"accept-all\":return R(!0,\"accept\",e);case\"decline-all\":return R(!1,\"decline\",e);case\"save\":return R(null,\"save\",e);case\"open-modal\":case\"show\":return It(e);case\"close\":return Rt();case\"accept-once\":return _t(Gt(e),!1,e);case\"accept-always\":return _t(Gt(e),!0,e);case\"dismiss\":return mt(e.closest(\"[data-cmp-gate]\"),!1);case\"reset\":return Pt()}}}),c.addEventListener(\"change\",function(t){var e=t.target;if(!(!e.matches||!e.matches(\"input[data-cmp-toggle]\"))){var r=e.getAttribute(\"data-cmp-toggle\").split(\":\"),a=r.slice(1).join(\":\"),n=r[0]===\"service\"?[a]:r[0]===\"purpose\"?X(a):g;n.forEach(function(i){s[i]&&!s[i].required&&T(i,e.checked)}),w(),C(\"change\",l({},f))}}),c.addEventListener(\"keydown\",function(t){if(!u.modal&&t.key===\"Escape\"){var e=t.target.closest&&t.target.closest(\"[data-cmp-gate][data-cmp-requested]\");e&&mt(e,!1);return}if(u.modal){if(t.key===\"Escape\"){Rt();return}if(t.key===\"Tab\"){var r=dt();if(r){var a=[].filter.call(r.querySelectorAll(ne),Dt);if(a.length){var n=a[0],i=a[a.length-1];r.contains(c.activeElement)?t.shiftKey&&(c.activeElement===n||c.activeElement===r)?(t.preventDefault(),i.focus()):!t.shiftKey&&c.activeElement===i&&(t.preventDefault(),n.focus()):(t.preventDefault(),n.focus())}}}}});var N={count:0,since:0,queued:!1};c.addEventListener(\"focusin\",function(t){if(u.modal){var e=dt();if(!(!e||e.contains(t.target))){!(u.opener&&u.opener.isConnected)&&t.target!==c.body&&(u.opener=t.target);var r=Date.now();r-N.since>1e3&&(N.since=r,N.count=0),!(N.queued||++N.count>10)&&(N.queued=!0,setTimeout(function(){N.queued=!1,u.modal&&tt()},0))}}});var Wt=\"[data-cmp-service],[data-cmp-service-def],[data-cmp-service-item],[data-cmp-gate],[data-cmp-status],[data-cmp-toggle],[data-cmp-if],[data-cmp-lang],[data-cmp-modal],[data-cmp-notice]\";new MutationObserver(function(t){for(var e=0;e<t.length;e++)for(var r=t[e].addedNodes,a=0;a<r.length;a++){var n=r[a];if(!(n.nodeType!==1||vt(n))&&(n.matches&&n.matches(Wt)||n.querySelector&&n.querySelector(Wt))){ie();return}}}).observe(E,{childList:!0,subtree:!0}),new MutationObserver(function(){Z(),u.modal&&tt()}).observe(E,{attributes:!0,attributeFilter:[\"lang\"]}),c.readyState===\"loading\"&&c.addEventListener(\"DOMContentLoaded\",$);var Bt={__engine:!0,version:\"1.2.1\",config:o,show:function(){z||$(),It()},showNotice:function(){u.notice=!0,h()},hide:pt,getConsent:O,getLanguage:function(){return E.getAttribute(\"data-cmp-language\")},getConsents:function(){var t={};return g.forEach(function(e){t[e]=O(e)}),t},isConfirmed:function(){return v},getServices:function(){return g.map(function(t){return l({},s[t])})},setConsent:function(t,e,r){T(t,!!e),r!==!1&&ot(\"api\"),D(),h(),I(),w()},acceptAll:function(){R(!0,\"accept\")},declineAll:function(){R(!1,\"decline\")},save:function(){R(null,\"save\")},reset:Pt,refresh:$,on:Ft,off:At};window.cmp=Bt,te(),et(),h(),Z(),c.readyState!==\"loading\"&&$()})();</script>\n<!-- Consent-managed head scripts go below this line. Example:\n<script type=\"text/plain\" data-cmp-service=\"google-analytics\" data-type=\"text/javascript\" data-src=\"https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX\"></script>\n-->\n",
+ "customCode": "<!-- Native CMP: configuration -->\n<script>\nwindow.cmpConfig = {\n  storage: \"cookie\", // \"cookie\" or \"localStorage\"\n  storageName: \"cmp_consent\",\n  cookieExpiresAfterDays: 365,\n  cookieDomain: \"\", // \".example.com\" shares consent across subdomains\n  default: false, // default for services without \"default\" in the consentPurposes variable\n  mustConsent: false, // true: open the preferences modal instead of the notice\n  noNotice: false, // true: contextual only, no notice on page load (gates, links and API ask for consent)\n  dataLayer: false, // true: push { event: \"cmp_consent\" } to window.dataLayer\n  // proof of consent: your own consent log (no IP addresses), see nativecmp.com/docs#proof-of-consent\n  // consentLog: \"https://consentlog.example.com\",\n  // Google Consent Mode v2: map consent types to service names\n  // consentMode: {\n  //   analytics_storage: [\"google-analytics\"],\n  //   ad_storage: [\"google-ads\"],\n  //   ad_user_data: [\"google-ads\"],\n  //   ad_personalization: [\"google-ads\"],\n  // },\n};\n</script>\n<style data-cmp-critical>html[data-cmp]:not([data-cmp-open=\"notice\"]) [data-cmp-notice]:not([data-cmp-preview] *),html[data-cmp]:not([data-cmp-open=\"modal\"]) [data-cmp-modal]:not([data-cmp-preview] *),html[data-cmp-confirmed=\"true\"] [data-cmp-if~=\"unconfirmed\"],html[data-cmp-confirmed=\"false\"]:not([data-cmp-mode=\"contextual\"]) [data-cmp-if~=\"confirmed\"],html[data-cmp]:not([data-cmp-changed]) [data-cmp-if~=\"changed\"],[data-cmp-gate]:not([data-cmp-state=\"granted\"]):not([data-cmp-gate-mode=\"interaction\"]) [data-cmp-gate-content],[data-cmp-gate][data-cmp-state=\"granted\"] [data-cmp-gate-notice],[data-cmp-gate][data-cmp-gate-mode=\"interaction\"]:not([data-cmp-requested]) [data-cmp-gate-notice],:is(iframe,img,video,audio,embed,object)[data-cmp-service]:not([data-cmp-state=\"granted\"]){display: none !important}html[data-cmp-open=\"modal\"]{overflow: hidden}[data-cmp-if][data-cmp-hidden]{display: none !important}</style>\n<script data-cmp-engine=\"1.3.0\">(function(){\"use strict\";if(window.cmp&&window.cmp.__engine)return;var yt=\"1.3.0\",c=document,y=c.documentElement,o=p({storage:\"cookie\",storageName:\"cmp_consent\",cookieDomain:\"\",cookiePath:\"/\",cookieExpiresAfterDays:365,default:!1,mustConsent:!1,noNotice:!1,confirmDelay:800,consentMode:null,consentModeDefaults:null,dataLayer:!1,consentLog:\"\",fallbackLanguage:\"\",debug:!1},window.cmpConfig||{});function p(t){for(var e=1;e<arguments.length;e++){var r=arguments[e];if(r)for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(t[n]=r[n])}return t}function it(){o.debug&&window.console&&console.debug.apply(console,[\"[cmp]\"].concat([].slice.call(arguments)))}function F(t){return(t||\"\").split(/\\s+/).filter(Boolean)}function G(t,e){var r=t.getAttribute(e);if(!(r===null||r===\"\"))return r===\"true\"}function A(t,e,r){for(var n=(r||c).querySelectorAll(t),a=0;a<n.length;a++)e(n[a])}function Ft(t){return t.replace(/[-[\\]/{}()*+?.\\\\^$|]/g,\"\\\\$&\")}function At(t){return t.nodeType===1&&t.hasAttribute(\"data-cmp-internal\")}function V(){try{return c.cookie||\"\"}catch(t){return\"\"}}function St(t){try{c.cookie=t}catch(e){}}function Vt(t){for(var e=V()?V().split(\";\"):[],r=0;r<e.length;r++){var n=e[r].indexOf(\"=\");if(!(n<0)&&e[r].slice(0,n).trim()===t)return e[r].slice(n+1).trim()}return null}function zt(){return(V()?V().split(\";\"):[]).map(function(t){return t.split(\"=\")[0].trim()}).filter(Boolean)}var z={get:function(){try{var t=o.storage===\"localStorage\"?localStorage.getItem(o.storageName):Vt(o.storageName);if(!t)return null;var e=JSON.parse(decodeURIComponent(t));return e&&typeof e==\"object\"?e:null}catch(r){return null}},set:function(t){var e=encodeURIComponent(JSON.stringify(t));if(o.storage===\"localStorage\"){try{localStorage.setItem(o.storageName,e)}catch(n){}return}var r=new Date(Date.now()+o.cookieExpiresAfterDays*864e5).toUTCString();St(o.storageName+\"=\"+e+\"; expires=\"+r+\"; path=\"+(o.cookiePath||\"/\")+(o.cookieDomain?\"; domain=\"+o.cookieDomain:\"\")+\"; SameSite=Lax\"+(location.protocol===\"https:\"?\"; Secure\":\"\"))},remove:function(){if(o.storage===\"localStorage\"){try{localStorage.removeItem(o.storageName)}catch(t){}return}Et(o.storageName,o.cookieDomain?[o.cookieDomain]:void 0)}};function Ht(){for(var t=location.hostname,e=[\"\",t,\".\"+t],r=t.split(\".\"),n=1;n<r.length-1;n++)e.push(\".\"+r.slice(n).join(\".\"));return e}function Et(t,e){var r=[\"/\",location.pathname];(e||Ht()).forEach(function(n){r.forEach(function(a){St(t+\"=; Max-Age=-99999999; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=\"+a+(n?\"; domain=\"+n:\"\"))})})}var W={};function Qt(t,e){return(W[t]=W[t]||[]).push(e),function(){Ct(t,e)}}function Ct(t,e){W[t]=(W[t]||[]).filter(function(r){return r!==e})}function C(t,e){(W[t]||[]).slice().forEach(function(r){try{r(e)}catch(n){console.error(n)}});try{c.dispatchEvent(new CustomEvent(\"cmp:\"+t,{detail:e}))}catch(r){}}var f={},v=[],ot=\"\",H=!1,wt=!1,l=z.get(),s=l&&l.consents?p({},l.consents):{},M=p({},s),h=!!l,Q=!1,w={},kt={},Ot={},X={},xt={},u={notice:!1,modal:!1,confirming:!1,opener:null},Xt=0;function ct(t){return t.required?!0:t.default!==void 0?t.default:!!o.default}function k(t){var e=f[t];if(e&&e.required||w[t])return!0;if(!s[t])return!1;var r=e?e.optOut:!1;return h||!!r}function ut(t){return t&&t.dependsOn?t.dependsOn:[]}function T(t,e){var r=f[t];r&&r.required&&(e=!0);var n=!!s[t]!==e;return s[t]=e,e?ut(r).forEach(function(a){s[a]||T(a,!0)}):v.forEach(function(a){ut(f[a]).indexOf(t)!==-1&&s[a]&&T(a,!1)}),n}function Yt(t){var e=0;return v.forEach(function(r){var n=f[r];n.contextualOnly||T(r,n.required||t)&&e++}),e}function Zt(){if(l){var t=!0;Object.keys(s).forEach(function(e){f[e]||delete s[e]}),v.forEach(function(e){e in s||(s[e]=ct(f[e]),t=!1)}),h=t,Q=!t,M=p({},s)}}function Nt(){try{if(window.crypto&&window.crypto.randomUUID)return window.crypto.randomUUID();var t=new Uint8Array(16);return window.crypto.getRandomValues(t),[].map.call(t,function(e){return(e+256).toString(16).slice(1)}).join(\"\")}catch(e){return String(Date.now())+Math.random().toString(36).slice(2,10)}}function te(){for(var t=ot||\"\",e=5381,r=0;r<t.length;r++)e=(e<<5)+e+t.charCodeAt(r)|0;return(e>>>0).toString(36)}function ee(){return l?(l.id||(l.id=Nt(),z.set(l)),l.id):\"\"}function qt(t,e){if(!(!o.consentLog||!e)){var r={id:e,time:new Date().toISOString(),type:t,consents:p({},s),config:te(),language:y.getAttribute(\"data-cmp-language\")||\"\",engine:yt},n=JSON.stringify(r);it(\"consent log\",r);try{if(navigator.sendBeacon&&navigator.sendBeacon(o.consentLog,new Blob([n],{type:\"text/plain\"})))return}catch(a){}try{fetch(o.consentLog,{method:\"POST\",body:n,headers:{\"Content-Type\":\"text/plain\"},keepalive:!0,mode:\"cors\"}).catch(function(){})}catch(a){}}}var st=!1;function J(){if(!(!st&&!u.modal)){var t=l&&l.id?l.id:\"\";A(\"[data-cmp-consent-id]\",function(e){e.textContent!==t&&(e.textContent=t)})}}[\"pointerdown\",\"keydown\",\"touchstart\"].forEach(function(t){c.addEventListener(t,function(){st||(st=!0,J())},{capture:!0,passive:!0})});function ft(t){var e={};Object.keys(s).forEach(function(r){M[r]!==s[r]&&(e[r]=s[r])}),l={id:l&&l.id||Nt(),consents:p({},s),timestamp:new Date().toISOString(),version:1},z.set(l),qt(t,l.id),J(),h=!0,Q=!1,w={},M=p({},s),o.dataLayer&&(window.dataLayer=window.dataLayer||[],window.dataLayer.push({event:\"cmp_consent\",cmp_type:t,cmp_consents:p({},s)})),C(\"save\",{type:t,consents:p({},s),changes:e})}function re(){var t=c.querySelectorAll(\"[data-cmp-service-def]\"),e=c.querySelectorAll(\"[data-cmp-service-item]\");if(!t.length&&!e.length)return!1;var r={},n=[];function a(g,E){if(!g)return null;r[g]||(n.push(g),r[g]={name:g,purposes:[],required:!1,default:void 0,optOut:!1,onlyOnce:!1,contextualOnly:!1,cookies:[],dependsOn:[]});var m=r[g];return E&&!m.defined&&(m.defined=!0,m.required=G(E,\"data-cmp-required\")||!1,m.default=G(E,\"data-cmp-default\"),m.optOut=G(E,\"data-cmp-opt-out\")||!1,m.onlyOnce=G(E,\"data-cmp-only-once\")||!1,m.contextualOnly=G(E,\"data-cmp-contextual-only\")||!1,m.cookies=F(E.getAttribute(\"data-cmp-cookies\")),m.dependsOn=F(E.getAttribute(\"data-cmp-depends-on\"))),m}function i(g,E){E.forEach(function(m){m&&g.purposes.indexOf(m)===-1&&g.purposes.push(m)})}for(var d=0;d<t.length;d++){var x=t[d],S=a(x.getAttribute(\"data-cmp-service-def\"),x);if(S){var at=x.closest(\"[data-cmp-purpose]\");i(S,F(x.getAttribute(\"data-cmp-purposes\")).concat(at?[at.getAttribute(\"data-cmp-purpose\")]:[]))}}for(var L=0;L<e.length;L++){var _=a(e[L].getAttribute(\"data-cmp-service-item\")),U=e[L].closest(\"[data-cmp-purpose]\");_&&U&&i(_,[U.getAttribute(\"data-cmp-purpose\")])}n.forEach(function(g){delete r[g].defined});var B=JSON.stringify(r);return B===ot?!1:(ot=B,f=r,v=n,wt=!0,l?Zt():(v.forEach(function(g){g in s||(s[g]=ct(f[g]))}),M=p({},s)),it(\"services\",f),!0)}var ne=[\"src\",\"srcset\",\"href\",\"poster\",\"data\"];function Lt(t){var e=t.getAttribute(\"data-src\")||t.getAttribute(\"src\");if(e){if(xt[e])return null;xt[e]=!0}for(var r=c.createElement(\"script\"),n=0;n<t.attributes.length;n++){var a=t.attributes[n];/^(type|src|data-src|data-type|data-cmp-state|data-cmp-service|data-cmp-on|data-cmp-id)$/.test(a.name)||r.setAttribute(a.name,a.value)}var i=t.getAttribute(\"data-type\");return i&&(r.type=i),t.nonce&&(r.nonce=t.nonce),e?r.src=e:r.text=t.text||t.textContent||\"\",r.setAttribute(\"data-cmp-internal\",\"\"),r.setAttribute(\"data-cmp-for\",t.getAttribute(\"data-cmp-service\")||\"\"),c.head.appendChild(r),r}function K(t){var e=t.getAttribute(\"data-cmp-id\");return e||(e=\"cmp\"+ ++Xt,t.setAttribute(\"data-cmp-id\",e)),e}function dt(t){A('[data-cmp-generated=\"'+K(t)+'\"]',function(e){e.parentNode&&e.parentNode.removeChild(e)})}function Y(t,e){return t.nodeType===1&&(t.setAttribute(\"data-cmp-generated\",K(e)),t.setAttribute(\"data-cmp-internal\",\"\")),t}function Mt(t){var e=t.content.cloneNode(!0),r=[];A(\"script\",function(i){r.push(i),i.parentNode.removeChild(i)},e);var n=[].slice.call(e.childNodes),a=t;n.forEach(function(i){i.nodeType===3&&!i.textContent.trim()||i.nodeType===1&&(Y(i,t),a.parentNode.insertBefore(i,a.nextSibling),a=i)}),r.forEach(function(i){var d=Lt(i);d&&Y(d,t)})}var lt=typeof WeakMap==\"function\"?new WeakMap:null;function ae(t){var e=t.parentNode;if(!lt||!e)return null;var r=lt.get(e);r||lt.set(e,r={});for(var n=0,a=t,i=t.getAttribute(\"data-cmp-service\");a=a.previousElementSibling;)a.tagName===t.tagName&&a.getAttribute(\"data-cmp-service\")===i&&n++;var d=[t.tagName,i,t.getAttribute(\"data-cmp-on\")||\"\",n].join(\"|\");return r[d]||(r[d]={})}function ie(t,e){var r=t.getAttribute(\"data-cmp-service\"),n=f[r],a=e?\"granted\":\"denied\",i=t.tagName,d=ae(t)||{};d.id&&!t.hasAttribute(\"data-cmp-id\")&&t.setAttribute(\"data-cmp-id\",d.id);var x=t.getAttribute(\"data-cmp-state\")||d.state;if(t.getAttribute(\"data-cmp-state\")!==a&&t.setAttribute(\"data-cmp-state\",a),d.state=a,d.id=K(t),x===a){i===\"TEMPLATE\"&&e&&!c.querySelector('[data-cmp-generated=\"'+d.id+'\"]')&&Mt(t),i!==\"SCRIPT\"&&i!==\"TEMPLATE\"&&i!==\"LINK\"&&Tt(t,e);return}if(i===\"SCRIPT\"){var S=t.getAttribute(\"data-cmp-on\")||\"accept\",at=S===\"decline\"?!e:e;if(!at){e||dt(t);return}if(S===\"accept\"&&n&&n.onlyOnce){if(X[r])return;X[r]=!0}var L=Lt(t);L&&S===\"accept\"&&Y(L,t);return}if(i===\"TEMPLATE\"){if(dt(t),e){if(n&&n.onlyOnce&&X[r+\":\"+K(t)])return;X[r+\":\"+K(t)]=!0,Mt(t)}return}if(i===\"LINK\"){if(dt(t),e&&t.getAttribute(\"data-href\")){for(var _=c.createElement(\"link\"),U=0;U<t.attributes.length;U++){var B=t.attributes[U];/^(href|data-href|data-cmp-state|data-cmp-service|data-cmp-id)$/.test(B.name)||_.setAttribute(B.name,B.value)}_.href=t.getAttribute(\"data-href\"),c.head.appendChild(Y(_,t))}return}Tt(t,e)}function Tt(t,e){var r=t.tagName,n=!1;if(ne.forEach(function(i){var d=t.getAttribute(\"data-\"+i);d!==null&&(e?t.getAttribute(i)!==d&&(t.setAttribute(i,d),n=!0):r===\"IFRAME\"&&i===\"src\"?t.hasAttribute(\"src\")&&t.getAttribute(\"src\")!==\"about:blank\"&&(t.setAttribute(\"src\",\"about:blank\"),n=!0):t.hasAttribute(i)&&(t.removeAttribute(i),n=!0))}),n&&(r===\"SOURCE\"||r===\"TRACK\")){var a=t.parentElement;a&&typeof a.load==\"function\"&&a.load()}}function oe(t){var e=f[t];if(!(!e||!e.cookies.length)){var r=zt();e.cookies.forEach(function(n){var a=n.charAt(0)===\"^\"?new RegExp(n):new RegExp(\"^\"+Ft(n)+\"$\");r.forEach(function(i){i!==o.storageName&&a.test(i)&&(it(\"deleting cookie\",i),Et(i))})})}}function D(){v.forEach(function(t){Ot[t]||(Ot[t]=!0,C(\"init\",{service:f[t]}));var e=k(t);kt[t]!==e&&(kt[t]=e,e||oe(t),C(\"service\",{name:t,consent:e,service:f[t]}))}),A(\"[data-cmp-service]\",function(t){At(t)||ie(t,k(t.getAttribute(\"data-cmp-service\")))}),Pt()}var Dt=\"\";function It(){window.dataLayer=window.dataLayer||[],window.dataLayer.push(arguments)}function Rt(t){var e={};return Object.keys(o.consentMode).forEach(function(r){var n=[].concat(o.consentMode[r]),a=n.some(function(i){return t?k(i):!1});e[r]=a?\"granted\":\"denied\"}),e}function ce(){if(o.consentMode){var t=p(Rt(!1),{wait_for_update:500},o.consentModeDefaults||{});It(\"consent\",\"default\",t),l&&Pt()}}function Pt(){if(o.consentMode){var t=Rt(!0),e=JSON.stringify(t);e!==Dt&&(Dt=e,It(\"consent\",\"update\",t))}}function N(t,e){e===null||e===!1?y.hasAttribute(t)&&y.removeAttribute(t):y.getAttribute(t)!==String(e)&&y.setAttribute(t,String(e))}function _t(){return!!o.noNotice&&!o.mustConsent}function b(){N(\"data-cmp\",H?\"ready\":\"loading\"),N(\"data-cmp-mode\",_t()?\"contextual\":null),N(\"data-cmp-open\",u.modal?\"modal\":u.notice?\"notice\":null),N(\"data-cmp-confirmed\",h?\"true\":\"false\"),N(\"data-cmp-changed\",Q?\"true\":null),N(\"data-cmp-confirming\",u.confirming?\"true\":null)}function Z(t){return v.filter(function(e){return f[e].purposes.indexOf(t)!==-1})}function pt(t,e){var r=e.filter(function(d){return!f[d].required}),n=r.filter(function(d){return s[d]}).length,a=r.length===0||n===r.length,i=n>0&&n<r.length;t.checked!==a&&(t.checked=a),t.indeterminate!==i&&(t.indeterminate=i),t.disabled!==(r.length===0)&&(t.disabled=r.length===0),i?t.setAttribute(\"aria-checked\",\"mixed\"):t.getAttribute(\"aria-checked\")===\"mixed\"&&t.removeAttribute(\"aria-checked\")}function O(){A(\"input[data-cmp-toggle]\",function(t){var e=t.getAttribute(\"data-cmp-toggle\").split(\":\"),r=e[0],n=e.slice(1).join(\":\");r===\"service\"&&f[n]?pt(t,[n]):r===\"purpose\"?pt(t,Z(n)):r===\"all\"&&pt(t,v)}),A(\"[data-cmp-purpose]\",function(t){var e=Z(t.getAttribute(\"data-cmp-purpose\")),r=e.length>0&&e.every(function(n){return f[n].required});t.setAttribute(\"data-cmp-required\",r?\"true\":\"false\")})}function I(){A(\"[data-cmp-gate],[data-cmp-status]\",function(t){var e=t.getAttribute(\"data-cmp-gate\")||t.getAttribute(\"data-cmp-status\"),r=k(e)?\"granted\":\"denied\",n=t.getAttribute(\"data-cmp-state\");n!==r&&(t.setAttribute(\"data-cmp-state\",r),n===\"granted\"&&t.getAttribute(\"data-cmp-gate-mode\")===\"interaction\"&&A(\"[data-cmp-gate-content] iframe\",function(a){a.getAttribute(\"src\")!==\"about:blank\"&&a.setAttribute(\"src\",\"about:blank\")},t))})}var ue={required:1,\"not-required\":1,\"opt-out\":1,granted:1,denied:1};function se(t){var e=t.closest(\"[data-cmp-service-item],[data-cmp-purpose],[data-cmp-status],[data-cmp-gate]\");if(!e)return null;var r;e.hasAttribute(\"data-cmp-service-item\")?r=[e.getAttribute(\"data-cmp-service-item\")]:e.hasAttribute(\"data-cmp-purpose\")?r=Z(e.getAttribute(\"data-cmp-purpose\")):r=[e.getAttribute(\"data-cmp-status\")||e.getAttribute(\"data-cmp-gate\")];var n=r.filter(function(a){return f[a]});return{required:n.length>0&&n.every(function(a){return f[a].required}),\"opt-out\":n.some(function(a){return f[a].optOut&&!f[a].required}),granted:r.length>0&&r.every(k)}}function $(){J(),A(\"[data-cmp-if]\",function(t){var e=F(t.getAttribute(\"data-cmp-if\")).filter(function(a){return ue[a]});if(e.length){var r=se(t),n=!!r&&e.every(function(a){return a===\"not-required\"?!r.required:a===\"denied\"?!r.granted:r[a]});n===t.hasAttribute(\"data-cmp-hidden\")&&(n?t.removeAttribute(\"data-cmp-hidden\"):t.setAttribute(\"data-cmp-hidden\",\"\"))}})}var tt=c.createElement(\"style\");tt.setAttribute(\"data-cmp-language\",\"\"),(c.head||y).appendChild(tt);function gt(t){return String(t||\"\").toLowerCase().replace(/_/g,\"-\").replace(/[^a-z0-9-]/g,\"\")}function fe(){var t=gt(y.getAttribute(\"lang\")),e=t.split(\"-\")[0],r=t&&t!==e?[t,e]:[e];if(c.readyState===\"loading\")return r;var n=[];if(A(\"[data-cmp-lang]\",function(x){var S=gt(x.getAttribute(\"data-cmp-lang\"));S&&n.indexOf(S)===-1&&n.push(S)}),!n.length)return r;for(var a=0;a<r.length;a++)if(n.indexOf(r[a])!==-1)return[r[a]];for(var i=0;i<n.length;i++)if(n[i].split(\"-\")[0]===e)return[n[i]];var d=gt(o.fallbackLanguage);return[n.indexOf(d)!==-1?d:n[0]]}function et(){var t=fe().filter(Boolean),e=\"[data-cmp-lang]\"+t.map(function(r){return':not([data-cmp-lang=\"'+r+'\" i])'}).join(\"\")+\"{display:none!important}\";tt.textContent!==e&&(tt.textContent=e),N(\"data-cmp-language\",t[0]||null)}var de='a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),summary,[tabindex]:not([tabindex=\"-1\"])';function Ut(t){return!!(t.offsetWidth||t.offsetHeight||t.getClientRects().length)}function mt(){for(var t=c.querySelectorAll(\"[data-cmp-modal]:not([data-cmp-preview] *)\"),e=null,r=0;r<t.length;r++){var n=t[r].querySelector(\"[data-cmp-dialog]\")||t[r];if(Ut(n))return n;e=e||n}return e}function rt(){var t=mt();if(!(!t||t.contains(c.activeElement))){t.hasAttribute(\"tabindex\")||t.setAttribute(\"tabindex\",\"-1\");try{t.focus({preventScroll:!0})}catch(e){t.focus()}}}var vt=!1;function j(){if(vt=!1,c.readyState===\"loading\"){b(),et(),I();return}var t=re();H?(t&&nt(),D()):(H=!0,wt||Object.keys(s).forEach(function(e){f[e]||(f[e]={name:e,purposes:[],cookies:[],dependsOn:[]},v.push(e))}),nt(),D(),C(\"ready\",jt.getConsents())),b(),et(),I(),O(),$(),$(),u.modal&&rt()}function le(){vt||(vt=!0,Promise.resolve().then(j))}function nt(){h||(o.mustConsent?u.modal=!0:o.noNotice||(u.notice=!0))}function Bt(t){u.opener=t||c.activeElement,u.modal=!0,b(),O(),J(),rt(),C(\"modal\",{open:!0})}function Gt(){if(u.modal&&!(o.mustConsent&&!h)){h&&(s=p({},M),u.notice=!1),u.modal=!1,b(),O();var t=u.opener;u.opener=null,t&&t.isConnected&&typeof t.focus==\"function\"&&t.focus(),C(\"modal\",{open:!1})}}function ht(){var t=u.modal,e=u.opener;u.notice=!1,u.modal=!1,u.confirming=!1,u.opener=null,b(),t&&(e&&e.isConnected&&typeof e.focus==\"function\"&&e.focus(),C(\"modal\",{open:!1}))}function R(t,e,r){var n=u.modal&&r&&r.closest&&r.closest(\"[data-cmp-modal]\"),a=h,i=t===null?0:Yt(t);ft(e),D(),I(),O(),$(),t!==null&&!a&&(n||o.mustConsent)&&i>0&&o.confirmDelay>0?(u.confirming=!0,b(),setTimeout(ht,o.confirmDelay)):ht()}var P=typeof WeakMap==\"function\"?new WeakMap:null;function pe(t){var e=t&&t.closest&&t.closest('[data-cmp-gate][data-cmp-gate-mode=\"interaction\"]');return!e||k(e.getAttribute(\"data-cmp-gate\"))||t.closest(\"[data-cmp-gate-notice]\")?null:t.closest(\"[data-cmp-gate-content]\")?e:null}function ge(t,e){P&&P.set(t,e),t.setAttribute(\"data-cmp-requested\",\"\");var r=t.querySelector(\"[data-cmp-gate-notice]\"),n=r&&r.querySelector(\"button, a[href]\");if(n)try{n.focus({preventScroll:!0})}catch(a){n.focus()}C(\"gate\",{name:t.getAttribute(\"data-cmp-gate\"),requested:!0})}function bt(t,e){if(!(!t||!t.hasAttribute(\"data-cmp-requested\"))){t.removeAttribute(\"data-cmp-requested\");var r=P&&P.get(t);P&&P.delete(t),!(!r||!r.isConnected)&&(e?setTimeout(function(){r.click()},0):typeof r.focus==\"function\"&&r.focus())}}[\"click\",\"auxclick\"].forEach(function(t){c.addEventListener(t,function(e){var r=pe(e.target);r&&(e.preventDefault(),e.stopImmediatePropagation(),ge(r,e.target.closest(\"button, a, [role='button']\")||e.target))},!0)});function Wt(t,e,r){if(t){if(T(t,!0),e&&(h||_t())){var n=p({},w);ft(\"contextual-accept\"),w=n,delete w[t]}else w[t]=!0,ut(f[t]).forEach(function(i){w[i]=!0});D(),b(),I(),O(),$();var a=r&&r.closest&&r.closest(\"[data-cmp-gate]\");a&&bt(a,!0)}}function Jt(){l&&l.id&&qt(\"reset\",l.id),z.remove(),l=null,s={},v.forEach(function(t){s[t]=ct(f[t])}),M=p({},s),h=!1,Q=!1,w={},D(),J(),u.modal=!1,nt(),b(),I(),O(),$()}function Kt(t){var e=t.getAttribute(\"data-cmp-name\");if(e)return e;var r=t.closest(\"[data-cmp-gate]\");return r?r.getAttribute(\"data-cmp-gate\"):null}c.addEventListener(\"click\",function(t){var e=t.target.closest&&t.target.closest(\"[data-cmp-action]\");if(e){var r=e.getAttribute(\"data-cmp-action\");switch((e.tagName===\"A\"||e.tagName===\"BUTTON\")&&t.preventDefault(),r){case\"accept-all\":return R(!0,\"accept\",e);case\"decline-all\":return R(!1,\"decline\",e);case\"save\":return R(null,\"save\",e);case\"open-modal\":case\"show\":return Bt(e);case\"close\":return Gt();case\"accept-once\":return Wt(Kt(e),!1,e);case\"accept-always\":return Wt(Kt(e),!0,e);case\"dismiss\":return bt(e.closest(\"[data-cmp-gate]\"),!1);case\"reset\":return Jt()}}}),c.addEventListener(\"change\",function(t){var e=t.target;if(!(!e.matches||!e.matches(\"input[data-cmp-toggle]\"))){var r=e.getAttribute(\"data-cmp-toggle\").split(\":\"),n=r.slice(1).join(\":\"),a=r[0]===\"service\"?[n]:r[0]===\"purpose\"?Z(n):v;a.forEach(function(i){f[i]&&!f[i].required&&T(i,e.checked)}),O(),C(\"change\",p({},s))}}),c.addEventListener(\"keydown\",function(t){if(!u.modal&&t.key===\"Escape\"){var e=t.target.closest&&t.target.closest(\"[data-cmp-gate][data-cmp-requested]\");e&&bt(e,!1);return}if(u.modal){if(t.key===\"Escape\"){Gt();return}if(t.key===\"Tab\"){var r=mt();if(r){var n=[].filter.call(r.querySelectorAll(de),Ut);if(n.length){var a=n[0],i=n[n.length-1];r.contains(c.activeElement)?t.shiftKey&&(c.activeElement===a||c.activeElement===r)?(t.preventDefault(),i.focus()):!t.shiftKey&&c.activeElement===i&&(t.preventDefault(),a.focus()):(t.preventDefault(),a.focus())}}}}});var q={count:0,since:0,queued:!1};c.addEventListener(\"focusin\",function(t){if(u.modal){var e=mt();if(!(!e||e.contains(t.target))){!(u.opener&&u.opener.isConnected)&&t.target!==c.body&&(u.opener=t.target);var r=Date.now();r-q.since>1e3&&(q.since=r,q.count=0),!(q.queued||++q.count>10)&&(q.queued=!0,setTimeout(function(){q.queued=!1,u.modal&&rt()},0))}}});var $t=\"[data-cmp-service],[data-cmp-service-def],[data-cmp-service-item],[data-cmp-gate],[data-cmp-status],[data-cmp-toggle],[data-cmp-if],[data-cmp-lang],[data-cmp-modal],[data-cmp-notice],[data-cmp-consent-id]\";new MutationObserver(function(t){for(var e=0;e<t.length;e++)for(var r=t[e].addedNodes,n=0;n<r.length;n++){var a=r[n];if(!(a.nodeType!==1||At(a))&&(a.matches&&a.matches($t)||a.querySelector&&a.querySelector($t))){le();return}}}).observe(y,{childList:!0,subtree:!0}),new MutationObserver(function(){et(),u.modal&&rt()}).observe(y,{attributes:!0,attributeFilter:[\"lang\"]}),c.readyState===\"loading\"&&c.addEventListener(\"DOMContentLoaded\",j);var jt={__engine:!0,version:yt,config:o,show:function(){H||j(),Bt()},showNotice:function(){u.notice=!0,b()},hide:ht,getConsent:k,getLanguage:function(){return y.getAttribute(\"data-cmp-language\")},getConsents:function(){var t={};return v.forEach(function(e){t[e]=k(e)}),t},isConfirmed:function(){return h},getConsentId:function(){return ee()},getServices:function(){return v.map(function(t){return p({},f[t])})},setConsent:function(t,e,r){T(t,!!e),r!==!1&&ft(\"api\"),D(),b(),I(),O()},acceptAll:function(){R(!0,\"accept\")},declineAll:function(){R(!1,\"decline\")},save:function(){R(null,\"save\")},reset:Jt,refresh:j,on:Qt,off:Ct};window.cmp=jt,ce(),nt(),b(),et(),c.readyState!==\"loading\"&&j()})();</script>\n<!-- Consent-managed head scripts go below this line. Example:\n<script type=\"text/plain\" data-cmp-service=\"google-analytics\" data-type=\"text/javascript\" data-src=\"https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX\"></script>\n-->\n",
  "consentManager": {
   "label": "Consent Manager",
   "skeleton": "<div ws:label=\"Consent Manager\" data-cmp-root={\"\"} ws:tokens={[token(\"consent\", css`display: block;`)]}><HtmlEmbed ws:label=\"Canvas Helper\"></HtmlEmbed><div ws:label=\"Service Registry\" hidden={true}></div><div ws:label=\"Languages\" data-cmp-languages={\"\"} ws:tokens={[token(\"consent-language\", css`display: block;`)]}></div></div>",
@@ -5414,7 +5551,7 @@
     "parentLabel": "Languages",
     "insertIndex": 0,
     "data": "consentTranslations",
-    "itemFragment": "<div ws:label=\"Language\" data-cmp-lang={expression`collectionItem?.lang`} lang={expression`collectionItem?.lang`} dir={expression`collectionItem.dir ?? ([\"ar\",\"arc\",\"ckb\",\"dv\",\"fa\",\"he\",\"ku\",\"ps\",\"sd\",\"ug\",\"ur\",\"yi\"].includes(collectionItem.lang.split(\"-\")[0].toLowerCase()) ? \"rtl\" : \"ltr\")`} ws:tokens={[token(\"consent-language\", css`display: block;`)]}><section ws:label=\"Consent Notice\" data-cmp-notice={\"\"} role={\"region\"} aria-labelledby={expression`\"consent-notice-title-\" + collectionItem?.lang`} ws:tokens={[token(\"consent-notice\", css`display: block;`)]}><div ws:label=\"Notice Body\" ws:tokens={[token(\"consent-notice-body\", css`display: block;`)]}><h2 id={expression`\"consent-notice-title-\" + collectionItem?.lang`} ws:tokens={[token(\"consent-notice-title\", css`display: block;`)]}>{expression`collectionItem?.notice?.title`}</h2><p ws:tokens={[token(\"consent-notice-text\", css`display: block;`)]}>{expression`collectionItem?.notice?.text`}{\" \"}<a href={expression`collectionItem?.privacyUrl`} ws:tokens={[token(\"consent-link\", css`display: block;`)]}>{expression`collectionItem?.privacyLabel`}</a>{\".\"}</p><p data-cmp-if={\"changed\"} ws:tokens={[token(\"consent-notice-changes\", css`display: block;`)]}>{expression`collectionItem?.notice?.changes`}</p></div><div ws:label=\"Notice Actions\" ws:tokens={[token(\"consent-notice-actions\", css`display: block;`)]}><button type={\"button\"} data-cmp-action={\"open-modal\"} ws:tokens={[token(\"consent-button\", css`display: block;`), token(\"is-consent-button-ghost\", css`display: block;`)]}>{expression`collectionItem?.notice?.customize`}</button><button type={\"button\"} data-cmp-action={\"decline-all\"} ws:tokens={[token(\"consent-button\", css`display: block;`), token(\"is-consent-button-secondary\", css`display: block;`)]}>{expression`collectionItem?.notice?.decline`}</button><button type={\"button\"} data-cmp-action={\"accept-all\"} ws:tokens={[token(\"consent-button\", css`display: block;`), token(\"is-consent-button-primary\", css`display: block;`)]}>{expression`collectionItem?.notice?.accept`}</button></div></section><div ws:label=\"Consent Modal\" data-cmp-modal={\"\"} ws:tokens={[token(\"consent-modal\", css`display: block;`)]}><div ws:label=\"Scrim\" data-cmp-action={\"close\"} aria-hidden={\"true\"} ws:tokens={[token(\"consent-modal-scrim\", css`display: block;`)]}></div><div ws:label=\"Dialog\" data-cmp-dialog={\"\"} role={\"dialog\"} aria-modal={\"true\"} aria-labelledby={expression`\"consent-modal-title-\" + collectionItem?.lang`} aria-describedby={expression`\"consent-modal-text-\" + collectionItem?.lang`} tabindex={\"-1\"} ws:tokens={[token(\"consent-modal-dialog\", css`display: block;`)]}><header ws:label=\"Modal Header\" ws:tokens={[token(\"consent-modal-header\", css`display: block;`)]}><h2 id={expression`\"consent-modal-title-\" + collectionItem?.lang`} ws:tokens={[token(\"consent-modal-title\", css`display: block;`)]}>{expression`collectionItem?.modal?.title`}</h2><button type={\"button\"} data-cmp-action={\"close\"} aria-label={expression`collectionItem?.modal?.close`} ws:tokens={[token(\"consent-modal-close\", css`display: block;`)]}><svg viewBox={\"0 0 24 24\"} width={\"20\"} height={\"20\"} aria-hidden={\"true\"} focusable={\"false\"}><path d={\"M6 6l12 12M18 6L6 18\"} stroke={\"currentColor\"} stroke-width={\"2\"} stroke-linecap={\"round\"} fill={\"none\"}></path></svg></button><p id={expression`\"consent-modal-text-\" + collectionItem?.lang`} ws:tokens={[token(\"consent-modal-text\", css`display: block;`)]}>{expression`collectionItem?.modal?.text`}{\" \"}<a href={expression`collectionItem?.privacyUrl`} ws:tokens={[token(\"consent-link\", css`display: block;`)]}>{expression`collectionItem?.privacyLabel`}</a>{\".\"}</p></header><div ws:label=\"Modal Body\" ws:tokens={[token(\"consent-modal-body\", css`display: block;`)]}><ul ws:label=\"Purposes\" ws:tokens={[token(\"consent-purposes\", css`display: block;`)]}><li ws:label=\"Toggle All\" ws:tokens={[token(\"consent-purpose\", css`display: block;`), token(\"is-consent-purpose-all\", css`display: block;`)]}><div ws:tokens={[token(\"consent-purpose-header\", css`display: block;`)]}><label for={expression`\"consent-toggle-all-\" + collectionItem?.lang`} ws:tokens={[token(\"consent-purpose-label\", css`display: block;`)]}>{expression`collectionItem?.modal?.toggleAll`}</label><input type={\"checkbox\"} role={\"switch\"} id={expression`\"consent-toggle-all-\" + collectionItem?.lang`} data-cmp-toggle={\"all\"} ws:tokens={[token(\"consent-switch\", css`display: block;`)]}></input></div></li></ul></div><footer ws:label=\"Modal Footer\" ws:tokens={[token(\"consent-modal-footer\", css`display: block;`)]}><button type={\"button\"} data-cmp-action={\"decline-all\"} ws:tokens={[token(\"consent-button\", css`display: block;`), token(\"is-consent-button-secondary\", css`display: block;`)]}>{expression`collectionItem?.modal?.decline`}</button><button type={\"button\"} data-cmp-action={\"save\"} ws:tokens={[token(\"consent-button\", css`display: block;`), token(\"is-consent-button-secondary\", css`display: block;`)]}>{expression`collectionItem?.modal?.save`}</button><button type={\"button\"} data-cmp-action={\"accept-all\"} ws:tokens={[token(\"consent-button\", css`display: block;`), token(\"is-consent-button-primary\", css`display: block;`)]}>{expression`collectionItem?.modal?.accept`}</button></footer></div></div></div>",
+    "itemFragment": "<div ws:label=\"Language\" data-cmp-lang={expression`collectionItem?.lang`} lang={expression`collectionItem?.lang`} dir={expression`collectionItem.dir ?? ([\"ar\",\"arc\",\"ckb\",\"dv\",\"fa\",\"he\",\"ku\",\"ps\",\"sd\",\"ug\",\"ur\",\"yi\"].includes(collectionItem.lang.split(\"-\")[0].toLowerCase()) ? \"rtl\" : \"ltr\")`} ws:tokens={[token(\"consent-language\", css`display: block;`)]}><section ws:label=\"Consent Notice\" data-cmp-notice={\"\"} role={\"region\"} aria-labelledby={expression`\"consent-notice-title-\" + collectionItem?.lang`} ws:tokens={[token(\"consent-notice\", css`display: block;`)]}><div ws:label=\"Notice Body\" ws:tokens={[token(\"consent-notice-body\", css`display: block;`)]}><h2 id={expression`\"consent-notice-title-\" + collectionItem?.lang`} ws:tokens={[token(\"consent-notice-title\", css`display: block;`)]}>{expression`collectionItem?.notice?.title`}</h2><p ws:tokens={[token(\"consent-notice-text\", css`display: block;`)]}>{expression`collectionItem?.notice?.text`}{\" \"}<a href={expression`collectionItem?.privacyUrl`} ws:tokens={[token(\"consent-link\", css`display: block;`)]}>{expression`collectionItem?.privacyLabel`}</a>{\".\"}</p><p data-cmp-if={\"changed\"} ws:tokens={[token(\"consent-notice-changes\", css`display: block;`)]}>{expression`collectionItem?.notice?.changes`}</p></div><div ws:label=\"Notice Actions\" ws:tokens={[token(\"consent-notice-actions\", css`display: block;`)]}><button type={\"button\"} data-cmp-action={\"open-modal\"} ws:tokens={[token(\"consent-button\", css`display: block;`), token(\"is-consent-button-ghost\", css`display: block;`)]}>{expression`collectionItem?.notice?.customize`}</button><button type={\"button\"} data-cmp-action={\"decline-all\"} ws:tokens={[token(\"consent-button\", css`display: block;`), token(\"is-consent-button-secondary\", css`display: block;`)]}>{expression`collectionItem?.notice?.decline`}</button><button type={\"button\"} data-cmp-action={\"accept-all\"} ws:tokens={[token(\"consent-button\", css`display: block;`), token(\"is-consent-button-primary\", css`display: block;`)]}>{expression`collectionItem?.notice?.accept`}</button></div></section><div ws:label=\"Consent Modal\" data-cmp-modal={\"\"} ws:tokens={[token(\"consent-modal\", css`display: block;`)]}><div ws:label=\"Scrim\" data-cmp-action={\"close\"} aria-hidden={\"true\"} ws:tokens={[token(\"consent-modal-scrim\", css`display: block;`)]}></div><div ws:label=\"Dialog\" data-cmp-dialog={\"\"} role={\"dialog\"} aria-modal={\"true\"} aria-labelledby={expression`\"consent-modal-title-\" + collectionItem?.lang`} aria-describedby={expression`\"consent-modal-text-\" + collectionItem?.lang`} tabindex={\"-1\"} ws:tokens={[token(\"consent-modal-dialog\", css`display: block;`)]}><header ws:label=\"Modal Header\" ws:tokens={[token(\"consent-modal-header\", css`display: block;`)]}><h2 id={expression`\"consent-modal-title-\" + collectionItem?.lang`} ws:tokens={[token(\"consent-modal-title\", css`display: block;`)]}>{expression`collectionItem?.modal?.title`}</h2><button type={\"button\"} data-cmp-action={\"close\"} aria-label={expression`collectionItem?.modal?.close`} ws:tokens={[token(\"consent-modal-close\", css`display: block;`)]}><svg viewBox={\"0 0 24 24\"} width={\"20\"} height={\"20\"} aria-hidden={\"true\"} focusable={\"false\"}><path d={\"M6 6l12 12M18 6L6 18\"} stroke={\"currentColor\"} stroke-width={\"2\"} stroke-linecap={\"round\"} fill={\"none\"}></path></svg></button><p id={expression`\"consent-modal-text-\" + collectionItem?.lang`} ws:tokens={[token(\"consent-modal-text\", css`display: block;`)]}>{expression`collectionItem?.modal?.text`}{\" \"}<a href={expression`collectionItem?.privacyUrl`} ws:tokens={[token(\"consent-link\", css`display: block;`)]}>{expression`collectionItem?.privacyLabel`}</a>{\".\"}</p></header><div ws:label=\"Modal Body\" ws:tokens={[token(\"consent-modal-body\", css`display: block;`)]}><ul ws:label=\"Purposes\" ws:tokens={[token(\"consent-purposes\", css`display: block;`)]}><li ws:label=\"Toggle All\" ws:tokens={[token(\"consent-purpose\", css`display: block;`), token(\"is-consent-purpose-all\", css`display: block;`)]}><div ws:tokens={[token(\"consent-purpose-header\", css`display: block;`)]}><label for={expression`\"consent-toggle-all-\" + collectionItem?.lang`} ws:tokens={[token(\"consent-purpose-label\", css`display: block;`)]}>{expression`collectionItem?.modal?.toggleAll`}</label><input type={\"checkbox\"} role={\"switch\"} id={expression`\"consent-toggle-all-\" + collectionItem?.lang`} data-cmp-toggle={\"all\"} ws:tokens={[token(\"consent-switch\", css`display: block;`)]}></input></div></li></ul></div><footer ws:label=\"Modal Footer\" ws:tokens={[token(\"consent-modal-footer\", css`display: block;`)]}><p ws:label=\"Consent ID\" data-cmp-if={\"confirmed\"} ws:tokens={[token(\"consent-id\", css`display: block;`)]}><span>{expression`collectionItem?.modal?.consentId`}</span><span data-cmp-consent-id={\"\"} ws:tokens={[token(\"consent-id-value\", css`display: block;`)]}></span></p><button type={\"button\"} data-cmp-action={\"decline-all\"} ws:tokens={[token(\"consent-button\", css`display: block;`), token(\"is-consent-button-secondary\", css`display: block;`)]}>{expression`collectionItem?.modal?.decline`}</button><button type={\"button\"} data-cmp-action={\"save\"} ws:tokens={[token(\"consent-button\", css`display: block;`), token(\"is-consent-button-secondary\", css`display: block;`)]}>{expression`collectionItem?.modal?.save`}</button><button type={\"button\"} data-cmp-action={\"accept-all\"} ws:tokens={[token(\"consent-button\", css`display: block;`), token(\"is-consent-button-primary\", css`display: block;`)]}>{expression`collectionItem?.modal?.accept`}</button></footer></div></div></div>",
     "renameItemParameterTo": "language"
    },
    {
@@ -5468,7 +5605,8 @@
        "services": "services",
        "decline": "Decline all",
        "save": "Save selection",
-       "accept": "Accept all"
+       "accept": "Accept all",
+       "consentId": "Your consent ID"
       },
       "purposes": [
        {
@@ -5508,7 +5646,8 @@
        "services": "Dienste",
        "decline": "Alle ablehnen",
        "save": "Auswahl speichern",
-       "accept": "Alle akzeptieren"
+       "accept": "Alle akzeptieren",
+       "consentId": "Ihre Einwilligungs-ID"
       },
       "purposes": [
        {
@@ -5548,7 +5687,8 @@
        "services": "servicios",
        "decline": "Rechazar todo",
        "save": "Guardar selección",
-       "accept": "Aceptar todo"
+       "accept": "Aceptar todo",
+       "consentId": "Su ID de consentimiento"
       },
       "purposes": [
        {
@@ -5589,7 +5729,8 @@
        "services": "خدمات",
        "decline": "رفض الكل",
        "save": "حفظ الاختيار",
-       "accept": "قبول الكل"
+       "accept": "قبول الكل",
+       "consentId": "معرّف موافقتك"
       },
       "purposes": [
        {
@@ -6575,7 +6716,8 @@
     "services": "services",
     "decline": "Decline all",
     "save": "Save selection",
-    "accept": "Accept all"
+    "accept": "Accept all",
+    "consentId": "Your consent ID"
    },
    "purposes": [
     {
@@ -6639,7 +6781,8 @@
     "services": "Dienste",
     "decline": "Alle ablehnen",
     "save": "Auswahl speichern",
-    "accept": "Alle akzeptieren"
+    "accept": "Alle akzeptieren",
+    "consentId": "Ihre Einwilligungs-ID"
    },
    "purposes": [
     {
@@ -6703,7 +6846,8 @@
     "services": "servicios",
     "decline": "Rechazar todo",
     "save": "Guardar selección",
-    "accept": "Aceptar todo"
+    "accept": "Aceptar todo",
+    "consentId": "Su ID de consentimiento"
    },
    "purposes": [
     {
@@ -6767,7 +6911,8 @@
     "services": "services",
     "decline": "Tout refuser",
     "save": "Enregistrer la sélection",
-    "accept": "Tout accepter"
+    "accept": "Tout accepter",
+    "consentId": "Votre identifiant de consentement"
    },
    "purposes": [
     {
@@ -6831,7 +6976,8 @@
     "services": "servizi",
     "decline": "Rifiuta tutto",
     "save": "Salva selezione",
-    "accept": "Accetta tutto"
+    "accept": "Accetta tutto",
+    "consentId": "Il tuo ID di consenso"
    },
    "purposes": [
     {
@@ -6895,7 +7041,8 @@
     "services": "serviços",
     "decline": "Rejeitar tudo",
     "save": "Guardar seleção",
-    "accept": "Aceitar tudo"
+    "accept": "Aceitar tudo",
+    "consentId": "O seu ID de consentimento"
    },
    "purposes": [
     {
@@ -6959,7 +7106,8 @@
     "services": "diensten",
     "decline": "Alles weigeren",
     "save": "Selectie opslaan",
-    "accept": "Alles accepteren"
+    "accept": "Alles accepteren",
+    "consentId": "Uw toestemmings-ID"
    },
    "purposes": [
     {
@@ -7023,7 +7171,8 @@
     "services": "usługi",
     "decline": "Odrzuć wszystkie",
     "save": "Zapisz wybór",
-    "accept": "Akceptuj wszystkie"
+    "accept": "Akceptuj wszystkie",
+    "consentId": "Twój identyfikator zgody"
    },
    "purposes": [
     {
@@ -7087,7 +7236,8 @@
     "services": "خدمات",
     "decline": "رفض الكل",
     "save": "حفظ الاختيار",
-    "accept": "قبول الكل"
+    "accept": "قبول الكل",
+    "consentId": "معرّف موافقتك"
    },
    "purposes": [
     {
@@ -7152,7 +7302,8 @@
     "services": "שירותים",
     "decline": "דחיית הכול",
     "save": "שמירת הבחירה",
-    "accept": "אישור הכול"
+    "accept": "אישור הכול",
+    "consentId": "מזהה ההסכמה שלך"
    },
    "purposes": [
     {
@@ -7212,6 +7363,28 @@
    "noCookies": "keine durch diese Einbindung",
    "extraLegalBasis": ", § 25 Abs. 1 TDDDG"
   }
+ },
+ "consentLog": {
+  "setting": "consentLog",
+  "deployUrl": "https://deploy.workers.cloudflare.com/?url=https://github.com/zehjotkah/native-cmp/tree/main/log",
+  "source": "https://github.com/zehjotkah/native-cmp/tree/main/log",
+  "docs": "https://nativecmp.com/docs#proof-of-consent",
+  "stores": [
+   "consent id",
+   "time",
+   "type",
+   "consents",
+   "config fingerprint",
+   "language",
+   "origin"
+  ],
+  "neverStores": [
+   "ip address",
+   "page url",
+   "user agent"
+  ],
+  "customDomainHint": "Add a custom domain such as `consentlog.yourdomain.com` in the Cloudflare dashboard, so the log is not a third-party domain for your visitors.",
+  "retentionVar": "RETENTION_DAYS"
  },
  "gates": {
   "placeholders": {

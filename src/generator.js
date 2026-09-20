@@ -54,6 +54,7 @@
         noNotice: false,
         consentMode: false,
         dataLayer: false,
+        consentLog: "",
       },
     };
   }
@@ -421,6 +422,7 @@
     if (options.noNotice) config.noNotice = true;
     else if (options.mustConsent) config.mustConsent = true;
     if (options.dataLayer) config.dataLayer = true;
+    if (options.consentLog) config.consentLog = options.consentLog.trim().replace(/\/$/, "");
     if (languages[0] !== "en") config.fallbackLanguage = languages[0];
     if (options.consentMode) {
       var map = {};

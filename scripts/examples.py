@@ -2,6 +2,7 @@
 
 import json
 
+import comm
 from ui import T
 from rich import txt, rich, p, ul, code, callout, intro, page_header, page_footer
 
@@ -432,6 +433,43 @@ def complete_config():
 </section>"""
 
 
+CONSENT_LOG_SNIPPET = 'window.cmpConfig = {\n  consentLog: "https://consentlog.example.com",\n};'
+
+
+def consent_log_section():
+    """Optional proof of consent: the Custom Code line and what one entry looks like."""
+    entry = {
+        "id": "c7f3aa11-4d2e-4a55-9f0c-1b6f1f2a77e1",
+        "time": "2026-09-20T10:15:31.204Z",
+        "type": "accept",
+        "consents": {"consent-manager": True, "google-analytics": True, "youtube": False},
+        "config": "1k3f9x",
+        "language": "en",
+        "engine": "1.3.0",
+    }
+    body = f"""
+<div {T('site-grid', 'is-site-grid-wide')}>
+  <div {T('site-example-column')}>{code(CONSENT_LOG_SNIPPET, 'Custom Code')}</div>
+  <div {T('site-example-column')}>{code(json.dumps(entry, indent=2), 'One entry in your log')}</div>
+</div>
+<div {T('site-actions')}>
+  <a href='{comm.LOG_DEPLOY_URL}' target='_blank' rel='noopener' {T('consent-button', 'is-consent-button-secondary')}>Deploy consent log to Cloudflare</a>
+  <a href='/docs#proof-of-consent' {T('consent-link')}>Proof of consent in the docs</a>
+</div>
+{callout('The log stores no IP address. Add a custom domain such as consentlog.yourdomain.com in Cloudflare, so it is not a third-party domain for your visitors, and name the log in your privacy policy.')}"""
+    return f"""
+<section id='consent-log' ws:label='Consent log' {T('site-section')}>
+  <div {T('site-container')}>
+    <div {T('site-stack')}>
+      <p {T('site-eyebrow')}>{txt('Optional')}</p>
+      <h2 {T('site-heading')}>Consent log</h2>
+      <p {T('site-lead')}>Keep your own record of every decision, in your own Cloudflare account. The preferences dialog shows each visitor their consent ID.</p>
+    </div>
+    {body}
+  </div>
+</section>"""
+
+
 def parts():
     sections = [
         intro("Service library", "Examples for the services you actually use.", "Copy-paste configurations for {n} common services: analytics, marketing pixels, embeds and widgets. Each example includes the service entry, its description and the blocked markup.".format(n=len(SERVICES))),
@@ -440,4 +478,5 @@ def parts():
     for i, key in enumerate(PURPOSES):
         sections.append(purpose_section(key, muted=bool(i % 2)))
     sections.append(complete_config())
+    sections.append(consent_log_section())
     return page_header("/examples"), sections, page_footer()

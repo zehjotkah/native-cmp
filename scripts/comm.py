@@ -18,6 +18,10 @@ GITHUB_URL = "https://github.com/zehjotkah/native-cmp"
 STARTER_URL = "https://starter.nativecmp.com"
 STARTER_CLONE_URL = "https://p-efd5ae31-66d4-4782-b4df-f4715407ce01.apps.webstudio.is/?authToken=75f8486f-a6c5-431a-a442-4b102d1fbbb8&mode=preview"
 STARTER_SUMMARY = "a Webstudio project with the engine, the Consent Manager, a Consent preview page and example gates already set up"
+# optional consent log: a Cloudflare Worker the site owner deploys into their own account
+LOG_DEPLOY_URL = "https://deploy.workers.cloudflare.com/?url=" + GITHUB_URL + "/tree/main/log"
+LOG_SOURCE_URL = GITHUB_URL + "/tree/main/log"
+LOG_DOMAIN_HINT = "Add a custom domain such as `consentlog.yourdomain.com` in the Cloudflare dashboard, so the log is not a third-party domain for your visitors."
 
 
 def page_link(key):

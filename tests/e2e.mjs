@@ -492,7 +492,7 @@ await dc.close();
   await test.route("http://generated.test/**", (route) => route.request().url() === "http://generated.test/" ? route.fulfill({ contentType: "text/html", body: blank }) : route.abort());
   await test.goto("http://generated.test/");
   await test.waitForFunction(() => window.cmp && window.cmp.getServices().length === 2);
-  check("generated snippet: engine boots", await test.evaluate(() => window.cmp.version === "1.2.1" && document.documentElement.getAttribute("data-cmp") === "ready"));
+  check("generated snippet: engine boots", await test.evaluate(() => window.cmp.version === "1.3.0" && document.documentElement.getAttribute("data-cmp") === "ready"));
   check("generated snippet: consent mode default sent", await test.evaluate(() => (window.dataLayer || []).some((e) => e[0] === "consent" && e[1] === "default" && e[2].analytics_storage === "denied")));
   check("generated snippet: GA blocked before consent", await test.evaluate(() => !document.querySelector("head script[data-cmp-for='google-analytics']")));
   await test.evaluate(() => window.cmp.acceptAll());
@@ -708,7 +708,7 @@ await dc.close();
     const prompt = document.getElementById("agent-prompt")?.textContent || "";
     return prompt.includes("https://nativecmp.com/install.txt") && prompt.includes("privacy policy") && prompt.includes("before you change anything");
   }));
-  check("install page: six capabilities, three steps, three alternatives", (await xp.locator("main section").nth(1).locator("h3").count()) === 6 && (await xp.locator("main section").nth(2).locator("h3").count()) === 3 && (await xp.locator("main section").nth(3).locator("a[href='/generator'], a[href='/examples'], a[href='/docs']").count()) === 3);
+  check("install page: seven capabilities, three steps, four alternatives", (await xp.locator("main section").nth(1).locator("h3").count()) === 7 && (await xp.locator("main section").nth(2).locator("h3").count()) === 3 && (await xp.locator("main section").nth(3).locator("a[href='/generator'], a[href='/examples'], a[href='/docs']").count()) === 3 && (await xp.locator("main section").nth(3).locator("a[href*='apps.webstudio.is']").count()) === 1);
   check("install page: nav marks AI install as current", (await xp.locator("header nav[aria-label='Main'] a[aria-current='page']").innerText()) === "AI install");
   for (const path of ["/generator", "/examples"]) {
     await xp.goto(BASE + path, { waitUntil: "domcontentloaded" });
@@ -772,6 +772,85 @@ check("mobile generator: update section doesn't overflow (only code blocks scrol
   const tooWide = [...details.querySelectorAll("*")].filter((el) => !el.closest("pre") && el.getBoundingClientRect().right > vw + 1);
   return document.documentElement.scrollWidth <= vw && tooWide.length === 0;
 }));
+
+// consent log: consent ID in the dialog and one entry per decision, without an IP address
+{
+  const lc = await browser.newContext({ viewport: { width: 1280, height: 860 } });
+  const lp = await lc.newPage();
+  const logged = [];
+  await lp.route("https://consentlog.test/**", async (route) => {
+    logged.push(JSON.parse(route.request().postData() || "{}"));
+    await route.fulfill({ status: 202, body: "ok", headers: { "access-control-allow-origin": "*" } });
+  });
+  await lp.addInitScript(() => {
+    // the site assigns window.cmpConfig itself, so add the setting as it is assigned
+    let value;
+    Object.defineProperty(window, "cmpConfig", {
+      configurable: true,
+      get: () => value,
+      set: (next) => {
+        value = { ...next, consentLog: "https://consentlog.test/" };
+      },
+    });
+    window.cmpConfig = {};
+    // sendBeacon is invisible to request interception: record it and let the engine fall back to fetch
+    window.__beacons = [];
+    navigator.sendBeacon = (url) => {
+      window.__beacons.push(String(url));
+      return false;
+    };
+  });
+  await lp.goto(BASE + "/", { waitUntil: "networkidle" });
+  check("consent log: nothing is sent before a decision", logged.length === 0);
+
+  await lp.locator('[data-cmp-notice] [data-cmp-action="accept-all"]:visible').first().click();
+  await lp.waitForFunction(() => window.cmp.isConfirmed());
+  await lp.waitForTimeout(500);
+  const entry = logged[0] || {};
+  const id = await lp.evaluate(() => window.cmp.getConsentId());
+  check("consent log: one entry per decision, with the consent ID", logged.length === 1 && entry.id === id && id.length >= 16, `entries=${logged.length}`);
+  check("consent log: entry has time, type, choices, config and language", /^\d{4}-\d{2}-\d{2}T/.test(entry.time) && entry.type === "accept" && entry.consents && entry.consents["consent-manager"] === true && !!entry.config && !!entry.language && entry.engine === "1.3.0");
+  check("consent log: no IP address, page URL or user agent is sent", !JSON.stringify(entry).match(/\b\d{1,3}(\.\d{1,3}){3}\b|http|Mozilla/));
+
+  const cookieId = await lp.evaluate(() => {
+    const raw = document.cookie.split("; ").find((c) => c.startsWith("cmp_consent="));
+    return JSON.parse(decodeURIComponent(raw.split("=").slice(1).join("=")))?.id;
+  });
+  check("consent log: the consent ID is stored in the cookie", cookieId === id);
+
+  await lp.evaluate(() => window.cmp.show());
+  await lp.waitForTimeout(300);
+  const shown = await lp.evaluate(() => {
+    const el = [...document.querySelectorAll("[data-cmp-modal] [data-cmp-consent-id]")].find((n) => n.offsetParent !== null);
+    const row = el?.closest("[data-cmp-if]");
+    return { text: el?.textContent || "", label: row?.textContent || "" };
+  });
+  check("consent log: the dialog shows the consent ID with a label", shown.text === id && shown.label.includes("Your consent ID"));
+
+  await lp.locator('[data-cmp-modal] [data-cmp-action="save"]:visible').first().click();
+  await lp.waitForTimeout(400);
+  check("consent log: saving in the dialog logs another entry with the same ID", logged.length === 2 && logged[1].id === id && logged[1].type === "save", `entries=${logged.length}`);
+
+  await lp.evaluate(() => window.cmp.reset());
+  await lp.waitForTimeout(400);
+  check("consent log: withdrawing logs a reset entry before the ID is dropped", logged.length === 3 && logged[2].type === "reset" && logged[2].id === id);
+  const afterReset = await lp.evaluate(() => window.cmp.getConsentId());
+  check("consent log: a new decision after reset gets a new consent ID", afterReset === "");
+
+  // a site without the setting must send nothing at all
+  const np = await lc.newPage();
+  const stray = [];
+  await np.route("https://consentlog.test/**", async (route) => {
+    stray.push(route.request().url());
+    await route.fulfill({ status: 202, body: "ok" });
+  });
+  await np.goto(BASE + "/", { waitUntil: "networkidle" });
+  await np.locator('[data-cmp-notice] [data-cmp-action="accept-all"]:visible').first().click();
+  await np.waitForTimeout(400);
+  check("consent log: off by default", stray.length === 0);
+  check("consent log: sent with sendBeacon so a decision is never delayed", (await lp.evaluate(() => window.__beacons.length)) === 3);
+  await lc.close();
+}
 
 const relevantErrors = errors.filter((e) => !/youtube|google|favicon|ERR_|net::|Failed to load resource: the server responded with a status of 404/i.test(e) || /^4\d\d http(?!.*favicon)/.test(e));
 check("no page errors", relevantErrors.length === 0, relevantErrors.slice(0, 3).join(" | "));

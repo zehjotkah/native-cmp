@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "native-cmp-consent-log",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-01",
+  "observability": { "enabled": true },
+  "vars": {
+    // How long entries are kept. 1095 days = 3 years.
+    "RETENTION_DAYS": "1095",
+    // Comma-separated list of sites allowed to write, e.g. "https://example.com,https://www.example.com".
+    // Empty accepts entries from any site; the origin is stored with every entry.
+    "ALLOWED_ORIGINS": ""
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "native-cmp-consent-log",
+      "database_id": "placeholder-created-on-deploy"
+    }
+  ]
+}

@@ -16,6 +16,7 @@ import theme
 import fragments
 import languages
 import catalog
+import comm
 import providers
 import service_descriptions
 
@@ -353,6 +354,16 @@ def build():
         "catalog": service_catalog(),
         "translationTemplates": translation_templates(),
         "privacyPolicy": providers.PRIVACY_POLICY,
+        "consentLog": {
+            "setting": "consentLog",
+            "deployUrl": comm.LOG_DEPLOY_URL,
+            "source": comm.LOG_SOURCE_URL,
+            "docs": "https://nativecmp.com/docs#proof-of-consent",
+            "stores": ["consent id", "time", "type", "consents", "config fingerprint", "language", "origin"],
+            "neverStores": ["ip address", "page url", "user agent"],
+            "customDomainHint": comm.LOG_DOMAIN_HINT,
+            "retentionVar": "RETENTION_DAYS",
+        },
         "gates": {
             "placeholders": {
                 "__SERVICE__": "service name from consentServices, e.g. google-maps",

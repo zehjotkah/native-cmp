@@ -21,6 +21,11 @@ window.cmpConfig = {
 <script data-cmp-engine="1.1.0">/* engine */</script>
 <!-- Consent-managed head scripts go below this line -->'''
 
+CONSENT_LOG_SNIPPET = """window.cmpConfig = {
+  consentLog: "https://consentlog.example.com",
+};"""
+
+
 SECTIONS = [
     ("overview", "Overview", [
         p("Native CMP is a consent manager for cookies, third-party scripts and embeds, built from regular Webstudio building blocks. There is no external service, dashboard or vendor script: everything lives in your project and can be edited in the Builder."),
@@ -294,6 +299,7 @@ cmp.showNotice(); cmp.hide();
 cmp.getConsent("youtube");           // effective consent: true / false
 cmp.getConsents();                   // { "google-analytics": true, … }
 cmp.isConfirmed();                   // visitor has decided
+cmp.getConsentId();                  // "c7f3aa11-…", the ID stored with the decision
 cmp.getServices();                   // parsed service definitions
 cmp.getLanguage();                   // "en"
 cmp.setConsent("youtube", true);     // change and save (pass false as 3rd argument to skip saving)
@@ -312,6 +318,37 @@ document.addEventListener("cmp:service", (event) => console.log(event.detail));'
             ["`gate`", "`{ name, requested }`", "An interaction-mode gate held back a click and opened its notice."],
         ]),
         p("Every event is also dispatched on `document` as `cmp:<event>`."),
+    ]),
+    ("proof-of-consent", "Proof of consent", [
+        p("The GDPR (Art. 7(1)) asks you to be able to **demonstrate** that a visitor consented. Native CMP stores every decision in the visitor’s browser, in the `cmp_consent` cookie, together with a random **consent ID**. The preferences dialog shows that ID, so visitors can quote it when they ask what they agreed to."),
+        p("Proof has two parts, and neither of them needs an IP address:"),
+        ul([
+            "**What someone chose**: the consent ID links a person to their entries. IP addresses change with every network, are shared by whole households and are personal data themselves, so they prove nothing here and are never stored.",
+            "**That you respected the choice**: this follows from how your site behaves, not from a log. Keep your test results and a record of which services and texts each version of your banner contained. Supervisory authorities check this by loading the site and watching what happens before a decision.",
+        ]),
+        h3("Optional: your own consent log", "consent-log"),
+        p("For a record you control, deploy the consent log to **your own Cloudflare account**: a small Worker with a database, from the same repository as Native CMP. Then set its URL in your Custom Code. Everything stays in your account, and ELECOS never sees the data."),
+        code(CONSENT_LOG_SNIPPET, "Custom Code"),
+        table(["Stored per entry", "Example", "Why"], [
+            ["Consent ID", "`c7f3aa11-…`", "Links the entry to the visitor’s cookie, without identifying them."],
+            ["Time of the decision", "`2026-09-20T10:15:31Z`", "When consent was given or withdrawn."],
+            ["Type", "`accept`, `decline`, `save`, `reset`", "How the decision was made."],
+            ["Choices", "`{\"google-analytics\": false}`", "What exactly was allowed."],
+            ["Config fingerprint", "`1k3f9x`", "Which service list and texts the visitor saw."],
+            ["Language", "`de`", "Which translation was shown."],
+            ["Site (origin)", "`https://example.com`", "Added by the log itself, not sent by the browser."],
+        ]),
+        p("**Never stored**: IP address, page URL, user agent or anything else about the visitor. Entries are sent with `navigator.sendBeacon`, so a decision is never delayed and a blocked request never breaks the page."),
+        ul([
+            "**Deploy**: open the [deploy page](" + comm.LOG_DEPLOY_URL + "), sign in to Cloudflare and confirm. The Worker and its database are created for you, and you set the export token during setup.",
+            "**Use your own domain**: " + comm.LOG_DOMAIN_HINT,
+            "**Retention**: entries are deleted after `RETENTION_DAYS`, 3 years by default. Change it in the Cloudflare dashboard under Settings → Variables.",
+            "**Restrict writers**: set `ALLOWED_ORIGINS` to your own site, so only your pages can add entries.",
+            "**Export**: open the log URL in a browser and download the CSV, for all entries or for one consent ID.",
+            "**Other backends**: any endpoint that accepts a POST works, for example an n8n or Make webhook. The [Worker source](" + comm.LOG_SOURCE_URL + ") shows the payload.",
+        ]),
+        p("**In your privacy policy**, name the log, for example: “When you make a privacy choice, we store that choice together with a random ID, the time and the language on our own server (Cloudflare) for three years, so that we can demonstrate your consent. Your IP address is not stored.”"),
+        callout("A consent log is evidence, not compliance. Whether your site is lawful also depends on your texts, your services and your privacy policy."),
     ]),
     ("consent-mode", "Google Consent Mode & GTM", [
         p("Map Google consent types to your services. The engine sends `gtag(\"consent\", \"default\")` with all mapped types denied as soon as it runs, and `gtag(\"consent\", \"update\")` whenever effective consent changes. A type is granted when any of its services is active."),

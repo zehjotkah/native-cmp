@@ -4,7 +4,7 @@ import json
 import pathlib
 
 import install_bundle
-from comm import GITHUB_URL, STARTER_CLONE_URL, STARTER_SUMMARY, STARTER_URL
+from comm import GITHUB_URL, STARTER_CLONE_URL, STARTER_SUMMARY, STARTER_URL, LOG_DEPLOY_URL, LOG_SOURCE_URL
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE = "https://nativecmp.com"
@@ -46,8 +46,9 @@ def install_md(bundle):
 3. **Configure** every service with its cookies, purpose and descriptions in all site languages.
 4. **Block** the existing scripts and **gate** the existing embeds and videos, so nothing loads before consent.
 5. **Update the privacy policy** with a section per service, for the user to review.
-6. **Theme** the consent UI with the site's own colors, radii and fonts.
-7. **Verify** and report what you changed.
+6. **Offer the optional consent log** (section 4c), so the user can demonstrate consent later.
+7. **Theme** the consent UI with the site's own colors, radii and fonts.
+8. **Verify** and report what you changed.
 
 The consent manager runs entirely on the user's own site and sends nothing to a third party, so it adds no processor or external domain to the privacy policy.
 
@@ -137,7 +138,20 @@ Build both variables from the scan and update them on the Consent Manager root (
 
 - **`consentServices`**: `{{"name": "consent-manager", "required": true}}` plus one entry per service: `{{"name": <id>, "cookies": catalog.cookies}}`. Cookie names starting with `^` are patterns; they are deleted when the visitor declines. Add `"optOut": true` only if the user decides a cookieless tool may run until declined.
 - **`consentTranslations`**: one entry per site language, starting from `bundle.translationTemplates[lang]` (all notice, dialog and purpose texts; `dir: "rtl"` for right-to-left). Set `privacyUrl` to the privacy policy path. Add each service to its purpose's `services` as `{{"name": <id>, "title": catalog.title, "description": catalog.descriptions[lang]}}`. Remove purposes without services, except `essential`. For languages without a template, translate the English one.
+- **Consent log (optional, ask the user)**: see 4c below.
 - **Google Consent Mode**: if the site uses Google tags, add `consentMode` to `window.cmpConfig` mapping each type in `catalog.consentMode` to its services, for example `{{"analytics_storage": ["google-analytics"]}}`.
+
+### 4c. Optional: consent log
+
+Native CMP stores each decision in the visitor's browser together with a random consent ID, which the preferences dialog shows. Ask the user whether they also want a log they control, to demonstrate consent later (`bundle.consentLog` has the links):
+
+1. Explain the trade-off: one entry per decision (consent ID, time, type, choices, config fingerprint, language, site), **no IP address**, stored in the user's own Cloudflare account, free on the Workers free plan.
+2. If they want it, deploy it: `npx wrangler@4 deploy` inside a clone of `{LOG_SOURCE_URL}` (the user needs `npx wrangler login` once), or send them the one-click deploy page `{LOG_DEPLOY_URL}`. Both create the Worker and its database.
+3. Tell them to add a **custom domain** such as `consentlog.theirdomain.com` in the Cloudflare dashboard, so the log is not a third-party domain for their visitors, and to set `ALLOWED_ORIGINS` to their site.
+4. Set `consentLog: "https://consentlog.theirdomain.com"` in `window.cmpConfig` in Custom Code (`update-project-settings`), or pass `--consent-log <url>` to the installer script.
+5. Add the log to the privacy policy section in section 6: what is stored, that no IP address is stored, and how long (`RETENTION_DAYS`, 3 years by default).
+
+Skip all of this if the user says no. The log is optional and off by default.
 
 ## 5. Block scripts and gate embeds
 
@@ -231,6 +245,8 @@ The engine runs from Project Settings → Custom Code; the notice and preference
 - [Service examples]({SITE}/examples): ready-to-copy configurations for 23 common services
 - [Documentation]({SITE}/docs): installation, configuration, services, languages, blocking scripts and embeds, Consent Gates, attributes, JavaScript API, Consent Mode, design tokens
 - [Starter project]({STARTER_CLONE_URL}): {STARTER_SUMMARY}, to clone for a new site ([live demo]({STARTER_URL}))
+
+- [Consent log]({LOG_SOURCE_URL}): optional Cloudflare Worker for proof of consent, deployed into the user's own account
 
 ## Source
 

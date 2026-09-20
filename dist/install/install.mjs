@@ -8,6 +8,7 @@
 //   node native-cmp-install.mjs [--page /] [--attach all|none|/a,/b] [--custom-code install|skip]
 //                    [--services file.json] [--translations file.json]
 //                    [--languages en,de] [--privacy-link-parent <instanceId>] [--contextual]
+//                    [--consent-log https://consentlog.example.com]
 //                    [--bundle <url or file>] [--force]
 
 import { execFileSync } from "node:child_process";
@@ -17,7 +18,7 @@ import { join } from "node:path";
 
 const DEFAULT_BUNDLE = "https://nativecmp.com/install/steps.txt";
 
-const args = { page: "/", attach: "all", "custom-code": "install", bundle: DEFAULT_BUNDLE, force: false, contextual: false };
+const args = { page: "/", attach: "all", "custom-code": "install", bundle: DEFAULT_BUNDLE, force: false, contextual: false, "consent-log": "" };
 for (let i = 2; i < process.argv.length; i++) {
   const key = process.argv[i].replace(/^--/, "");
   if (key === "force" || key === "contextual") args[key] = true;
@@ -146,6 +147,13 @@ if (args["custom-code"] !== "skip") {
   } else {
     code = bundle.customCode + (current ? "\n\n" + current : "");
   }
+  if (args["consent-log"]) {
+    // proof of consent: entries go to the user's own log, never to us
+    const url = JSON.stringify(String(args["consent-log"]).replace(/\/$/, ""));
+    code = /consentLog:\s*"[^"]*"/.test(code)
+      ? code.replace(/consentLog:\s*"[^"]*"/, `consentLog: ${url}`)
+      : code.replace("window.cmpConfig = {", `window.cmpConfig = {\n  consentLog: ${url},`);
+  }
   if (args.contextual) {
     // contextual consent only: no notice on page load, gates and the settings link ask for consent
     code = /noNotice:\s*(true|false)/.test(code)
@@ -244,4 +252,5 @@ Installed. Not finished yet:
 2. Review it visually: open the notice and the preferences dialog (Builder: canvasPreview = modal) and compare
    buttons, headings, radii and colors with a real page, at desktop width and at 390px.
 3. Add services, translations and gates (https://nativecmp.com/generator) and a Privacy settings link in the footer.
-4. Publish.`);
+4. Optional proof of consent: deploy your own consent log and pass --consent-log <url> (https://nativecmp.com/docs#proof-of-consent).
+5. Publish.`);

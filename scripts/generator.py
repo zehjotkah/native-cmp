@@ -6,6 +6,7 @@ import re
 import subprocess
 
 import catalog
+import comm
 from chrome import SUPPORT_URL
 import design
 import theme
@@ -280,6 +281,16 @@ def steps():
     <div {T('site-actions')}>
       <button type='button' data-gen-action='reset' {T('consent-button', 'is-consent-button-ghost')}>Reset generator</button>
     </div>
+  </fieldset>
+
+  <fieldset ws:label='Step Consent Log' {T('site-fieldset')}>
+    <legend {T('site-legend')}>7. Proof of consent (optional)</legend>
+    <p {T('site-help')}>{rich('Native CMP stores each visitor’s choice in their browser. A consent log adds a record you control: one entry per decision, with the consent ID shown in the preferences dialog. No IP addresses. Deploy it to your own Cloudflare account, paste the URL here and it goes into your Custom Code.')}</p>
+    <div {T('site-actions')}>
+      <a href='{comm.LOG_DEPLOY_URL}' target='_blank' rel='noopener' {T('consent-button', 'is-consent-button-secondary')}>Deploy consent log to Cloudflare</a>
+      <a href='{comm.LOG_SOURCE_URL}' target='_blank' rel='noopener' {T('consent-link')}>Source and setup</a>
+    </div>
+    {field('Consent log URL', text_input("data-gen-option='consentLog'", 'https://consentlog.example.com'), comm.LOG_DOMAIN_HINT)}
   </fieldset>
 </div>"""
 

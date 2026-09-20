@@ -198,6 +198,7 @@ def language_item():
         </ul>
       </div>
       <footer ws:label='Modal Footer' {T('consent-modal-footer')}>
+        <p ws:label='Consent ID' data-cmp-if='confirmed' {T('consent-id')}><span>{expr(L + '.modal.consentId')}</span><span data-cmp-consent-id='' {T('consent-id-value')}></span></p>
         <button type='button' data-cmp-action='decline-all' {T('consent-button', 'is-consent-button-secondary')}>{expr(L + '.modal.decline')}</button>
         <button type='button' data-cmp-action='save' {T('consent-button', 'is-consent-button-secondary')}>{expr(L + '.modal.save')}</button>
         <button type='button' data-cmp-action='accept-all' {T('consent-button', 'is-consent-button-primary')}>{expr(L + '.modal.accept')}</button>

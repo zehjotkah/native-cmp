@@ -14,6 +14,8 @@
 
   if (window.cmp && window.cmp.__engine) return;
 
+  var VERSION = "1.3.0";
+
   var doc = document;
   var html = doc.documentElement;
 
@@ -31,6 +33,7 @@
       consentMode: null, // Google Consent Mode v2: { analytics_storage: ["google-analytics"], ... }
       consentModeDefaults: null, // extra `gtag("consent","default",…)` fields, e.g. { security_storage: "granted" }
       dataLayer: false, // push { event: "cmp_consent" } into window.dataLayer on decisions
+      consentLog: "", // URL of your own consent log, e.g. "https://consentlog.example.com". No IP address is sent.
       fallbackLanguage: "", // language shown when no translation matches <html lang> (default: first one)
       debug: false,
     },
@@ -284,13 +287,98 @@
     savedConsents = assign({}, consents);
   }
 
+  /* ---------------------------------------------------------- consent log */
+
+  function randomId() {
+    try {
+      if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
+      var bytes = new Uint8Array(16);
+      window.crypto.getRandomValues(bytes);
+      return [].map
+        .call(bytes, function (byte) {
+          return (byte + 256).toString(16).slice(1);
+        })
+        .join("");
+    } catch (error) {
+      return String(Date.now()) + Math.random().toString(36).slice(2, 10);
+    }
+  }
+
+  // short fingerprint of the service list, so a log entry says which setup the visitor saw
+  function configHash() {
+    var text = configSignature || "";
+    var hash = 5381;
+    for (var i = 0; i < text.length; i++) hash = ((hash << 5) + hash + text.charCodeAt(i)) | 0;
+    return (hash >>> 0).toString(36);
+  }
+
+  function consentId() {
+    if (!stored) return "";
+    if (!stored.id) {
+      stored.id = randomId();
+      store.set(stored);
+    }
+    return stored.id;
+  }
+
+  // Sent from the browser when a decision is made. No IP address, no page URL:
+  // the log server only stores what is in this payload plus the origin it came from.
+  function sendLog(type, id) {
+    if (!cfg.consentLog || !id) return;
+    var payload = {
+      id: id,
+      time: new Date().toISOString(),
+      type: type,
+      consents: assign({}, consents),
+      config: configHash(),
+      language: html.getAttribute("data-cmp-language") || "",
+      engine: VERSION,
+    };
+    var body = JSON.stringify(payload);
+    log("consent log", payload);
+    try {
+      // text/plain keeps it a simple request, so no preflight and no blocked decision
+      if (navigator.sendBeacon && navigator.sendBeacon(cfg.consentLog, new Blob([body], { type: "text/plain" }))) return;
+    } catch (error) {}
+    try {
+      fetch(cfg.consentLog, { method: "POST", body: body, headers: { "Content-Type": "text/plain" }, keepalive: true, mode: "cors" }).catch(function () {});
+    } catch (error) {}
+  }
+
+  // The consent ID is the only text the engine writes into the page, so it waits
+  // for the first interaction or the dialog opening. A framework hydrates the
+  // markup it rendered on the server, and text changed while that runs breaks it.
+  var interacted = false;
+
+  function renderConsentId() {
+    if (!interacted && !ui.modal) return;
+    var id = stored && stored.id ? stored.id : "";
+    each("[data-cmp-consent-id]", function (el) {
+      if (el.textContent !== id) el.textContent = id;
+    });
+  }
+
+  ["pointerdown", "keydown", "touchstart"].forEach(function (type) {
+    doc.addEventListener(
+      type,
+      function () {
+        if (interacted) return;
+        interacted = true;
+        renderConsentId();
+      },
+      { capture: true, passive: true }
+    );
+  });
+
   function saveConsents(type) {
     var changes = {};
     Object.keys(consents).forEach(function (name) {
       if (savedConsents[name] !== consents[name]) changes[name] = consents[name];
     });
-    stored = { consents: assign({}, consents), timestamp: new Date().toISOString(), version: 1 };
+    stored = { id: (stored && stored.id) || randomId(), consents: assign({}, consents), timestamp: new Date().toISOString(), version: 1 };
     store.set(stored);
+    sendLog(type, stored.id);
+    renderConsentId();
     confirmed = true;
     changed = false;
     temporary = {};
@@ -749,6 +837,7 @@
   }
 
   function renderConditions() {
+    renderConsentId();
     each("[data-cmp-if]", function (el) {
       var conditions = words(el.getAttribute("data-cmp-if")).filter(function (c) {
         return ROW_CONDITIONS[c];
@@ -898,6 +987,7 @@
     ui.modal = true;
     renderRoot();
     renderToggles();
+    renderConsentId();
     focusModal();
     emit("modal", { open: true });
   }
@@ -1034,6 +1124,7 @@
   }
 
   function resetConsents() {
+    if (stored && stored.id) sendLog("reset", stored.id);
     store.remove();
     stored = null;
     consents = {};
@@ -1045,6 +1136,7 @@
     changed = false;
     temporary = {};
     applyConsents();
+    renderConsentId();
     ui.modal = false;
     openInitial();
     renderRoot();
@@ -1160,7 +1252,7 @@
   // Webstudio remounts page content on client-side navigation. Watch the whole
   // document and re-sync whenever consent-related nodes appear.
   var RELEVANT =
-    "[data-cmp-service],[data-cmp-service-def],[data-cmp-service-item],[data-cmp-gate],[data-cmp-status],[data-cmp-toggle],[data-cmp-if],[data-cmp-lang],[data-cmp-modal],[data-cmp-notice]";
+    "[data-cmp-service],[data-cmp-service-def],[data-cmp-service-item],[data-cmp-gate],[data-cmp-status],[data-cmp-toggle],[data-cmp-if],[data-cmp-lang],[data-cmp-modal],[data-cmp-notice],[data-cmp-consent-id]";
 
   new MutationObserver(function (mutations) {
     for (var i = 0; i < mutations.length; i++) {
@@ -1188,7 +1280,7 @@
 
   var api = {
     __engine: true,
-    version: "1.2.1",
+    version: VERSION,
     config: cfg,
     show: function () {
       if (!configReady) sync();
@@ -1212,6 +1304,9 @@
     },
     isConfirmed: function () {
       return confirmed;
+    },
+    getConsentId: function () {
+      return consentId();
     },
     getServices: function () {
       return serviceOrder.map(function (name) {
