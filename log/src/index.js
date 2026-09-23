@@ -130,10 +130,10 @@ async function store(request, env, ctx) {
   return text("ok\n", 202, corsHeaders(origin));
 }
 
-function authorized(request, url, env) {
+function authorized(request, url, env, formToken = "") {
   const expected = String(env.EXPORT_TOKEN || "");
   if (!expected) return false;
-  const given = url.searchParams.get("token") || (request.headers.get("authorization") || "").replace(/^Bearer /, "");
+  const given = formToken || url.searchParams.get("token") || (request.headers.get("authorization") || "").replace(/^Bearer /, "");
   if (given.length !== expected.length) return false;
   let same = 0;
   for (let i = 0; i < expected.length; i++) same |= given.charCodeAt(i) ^ expected.charCodeAt(i);
@@ -142,11 +142,11 @@ function authorized(request, url, env) {
 
 const csvCell = (value) => `"${String(value ?? "").replace(/"/g, '""')}"`;
 
-async function exportCsv(request, url, env) {
+async function exportCsv(request, url, env, form = null) {
   if (!env.EXPORT_TOKEN) return text("Set the EXPORT_TOKEN secret in the Cloudflare dashboard (Settings -> Variables and Secrets) to enable the export.\n", 503);
-  if (!authorized(request, url, env)) return text("wrong or missing token\n", 401);
+  if (!authorized(request, url, env, form ? String(form.get("token") || "") : "")) return text("wrong or missing token\n", 401);
   await setup(env.DB);
-  const id = url.searchParams.get("id");
+  const id = (form ? String(form.get("id") || "") : "") || url.searchParams.get("id");
   const limit = Math.min(Number(url.searchParams.get("limit") || 10000), 50000);
   const query = id
     ? env.DB.prepare("SELECT * FROM entries WHERE consent_id = ? ORDER BY row_id DESC LIMIT ?").bind(id, limit)
@@ -170,48 +170,76 @@ async function status(env) {
   return { entries: total ? total.count : 0, oldest: oldest ? oldest.received_at : null, retentionDays: Number(env.RETENTION_DAYS || 1095), origins: allowedOrigins(env) };
 }
 
-function page(info, hasToken) {
-  const origins = info.origins.length ? info.origins.join(", ") : "any site (set ALLOWED_ORIGINS to restrict)";
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
-<title>Consent log</title><style>
+const STYLE = `<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<style>
 :root{color-scheme:light dark;--bg:#ffffff;--fg:#15171c;--muted:#4d5461;--line:#dde0e5;--accent:#1d4ed8}
 @media (prefers-color-scheme:dark){:root{--bg:#15171c;--fg:#f3f4f6;--muted:#a8aeba;--line:#333a45;--accent:#7aa2ff}}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,sans-serif}
 main{max-width:640px;margin:0 auto;padding:48px 24px}
-h1{font-size:28px;margin:0 0 8px}p{margin:0 0 16px;color:var(--muted)}
+h1{font-size:28px;margin:0 0 8px}h2{font-size:20px;margin:32px 0 8px}p{margin:0 0 16px;color:var(--muted)}
+a{color:var(--accent)}
 dl{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:24px 0;padding:16px;border:1px solid var(--line);border-radius:12px}
-dt{color:var(--muted)}dd{margin:0}
+dt{color:var(--muted)}dd{margin:0;overflow-wrap:anywhere}
 form{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
 input{flex:1 1 200px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:transparent;color:inherit;font:inherit}
 button{padding:10px 18px;border:0;border-radius:999px;background:var(--accent);color:#fff;font:inherit;font-weight:600;cursor:pointer}
 code{font-family:ui-monospace,monospace;font-size:.9em}
-</style></head><body><main>
+</style>`;
+
+const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+
+// What anyone sees: no statistics, no settings, just that this log is private.
+function privatePage(env, message = "") {
+  const form = env.EXPORT_TOKEN
+    ? `<form action="/view" method="post"><input name="token" type="password" placeholder="Export token" autocomplete="current-password" required><button type="submit">Open</button></form>`
+    : `<p>The owner has not set an export token yet.</p>`;
+  return `<!doctype html><html lang="en"><head>${STYLE}<title>Consent log</title></head><body><main>
 <h1>Consent log</h1>
-<p>This is your Native CMP consent log. It stores one entry per consent decision, without IP addresses.</p>
-<dl><dt>Entries</dt><dd>${info.entries}</dd><dt>Oldest entry</dt><dd>${info.oldest ? info.oldest.slice(0, 10) : "none yet"}</dd><dt>Kept for</dt><dd>${info.retentionDays} days</dd><dt>Accepts entries from</dt><dd>${origins}</dd></dl>
-<h2>Export</h2>
-${hasToken
-  ? `<form action="/export.csv" method="get"><input name="token" type="password" placeholder="Export token" required><input name="id" placeholder="Consent ID (optional)"><button type="submit">Download CSV</button></form>`
-  : `<p>Set the <code>EXPORT_TOKEN</code> secret in the Cloudflare dashboard under Settings → Variables and Secrets, then reload this page to download entries.</p>`}
-<p>Point your site at this log by setting <code>consentLog: "${info.self}"</code> in your Native CMP configuration. Add a custom domain such as <code>consentlog.yourdomain.com</code> in the Cloudflare dashboard so it is not a third-party domain for your visitors.</p>
+<p>This is a private Native CMP consent log. Only its owner can read it.</p>
+${message ? `<p><strong>${escapeHtml(message)}</strong></p>` : ""}
+${form}
+<h2>Need one for your own site?</h2>
+<p>Every site needs its own log. <a href="https://nativecmp.com/docs#proof-of-consent">Set up your consent log</a> in your own Cloudflare account.</p>
 </main></body></html>`;
 }
+
+// What the owner sees after entering the export token.
+function ownerPage(info, token, self) {
+  const origins = info.origins.length ? info.origins.join(", ") : "any site (set ALLOWED_ORIGINS to restrict)";
+  return `<!doctype html><html lang="en"><head>${STYLE}<title>Consent log</title></head><body><main>
+<h1>Consent log</h1>
+<p>One entry per consent decision, without IP addresses.</p>
+<dl><dt>Entries</dt><dd>${info.entries}</dd><dt>Oldest entry</dt><dd>${info.oldest ? info.oldest.slice(0, 10) : "none yet"}</dd><dt>Kept for</dt><dd>${info.retentionDays} days</dd><dt>Accepts entries from</dt><dd>${escapeHtml(origins)}</dd></dl>
+<h2>Export</h2>
+<form action="/export.csv" method="post"><input type="hidden" name="token" value="${escapeHtml(token)}"><input name="id" placeholder="Consent ID (optional)"><button type="submit">Download CSV</button></form>
+<h2>Your site</h2>
+<p>Your Native CMP configuration uses <code>consentLog: "${escapeHtml(self)}"</code>.</p>
+</main></body></html>`;
+}
+
+const html = (body, status = 200) => new Response(body, { status, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex, nofollow" } });
 
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const origin = request.headers.get("origin") || "";
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders(origin) });
+    if (request.method === "POST" && url.pathname === "/view") {
+      const form = await request.formData();
+      const token = String(form.get("token") || "");
+      if (!authorized(request, url, env, token)) return html(privatePage(env, "Wrong token."), 401);
+      return html(ownerPage(await status(env), token, url.origin));
+    }
+    if (request.method === "POST" && url.pathname === "/export.csv") return exportCsv(request, url, env, await request.formData());
     if (request.method === "POST") return store(request, env, ctx);
     if (request.method !== "GET") return text("method not allowed\n", 405);
     if (url.pathname === "/export.csv") return exportCsv(request, url, env);
     if (url.pathname === "/status") {
-      const info = await status(env);
-      return Response.json(info, { headers: { "cache-control": "no-store" } });
+      if (!authorized(request, url, env)) return text("wrong or missing token\n", 401);
+      return Response.json(await status(env), { headers: { "cache-control": "no-store" } });
     }
-    const info = await status(env);
-    info.self = url.origin;
-    return new Response(page(info, !!env.EXPORT_TOKEN), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
+    if (url.pathname === "/robots.txt") return text("User-agent: *\nDisallow: /\n");
+    return html(privatePage(env));
   },
 
   // optional: runs if a scheduled trigger is configured for this Worker

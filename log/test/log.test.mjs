@@ -44,7 +44,7 @@ worker.stderr.on("data", (chunk) => process.env.VERBOSE && process.stderr.write(
 try {
   let up = false;
   for (let i = 0; i < 90 && !up; i++) {
-    up = await fetch(`${BASE}/status`).then((r) => r.ok).catch(() => false);
+    up = await fetch(`${BASE}/robots.txt`).then((r) => r.ok).catch(() => false);
     if (!up) await sleep(1000);
   }
   if (!up) throw new Error("worker did not start; run with VERBOSE=1 to see why");
@@ -60,8 +60,9 @@ try {
   await post(entry({ id: "c7f3aa11-0000-4000-8000-000000000002", type: "decline", consents: { "consent-manager": true, youtube: false } }));
   await post(entry({ type: "reset" }));
 
-  const info = await (await fetch(`${BASE}/status`)).json();
-  check("status reports the entries", info.entries === 3, `entries=${info.entries}`);
+  check("status needs a token", (await fetch(`${BASE}/status`)).status === 401);
+  const info = await (await fetch(`${BASE}/status`, { headers: { authorization: `Bearer ${TOKEN}` } })).json();
+  check("status reports the entries to the owner", info.entries === 3, `entries=${info.entries}`);
   check("status reports the retention", info.retentionDays === 1095);
 
   check("export needs a token", (await fetch(`${BASE}/export.csv`)).status === 401);
@@ -76,7 +77,19 @@ try {
   check("export filters by consent ID", single.trim().split("\n").length === 2);
 
   const home = await (await fetch(BASE)).text();
-  check("info page shows the count and the custom domain hint", home.includes("Consent log") && home.includes("consentlog.yourdomain.com"));
+  check("public page reveals nothing about the log", home.includes("private") && !home.includes("Entries") && !home.includes(ORIGIN) && !home.includes("consentLog:"));
+  check("public page points visitors to their own log", home.includes("nativecmp.com/docs#proof-of-consent"));
+
+  const form = (fields) => new URLSearchParams(fields);
+  const denied = await fetch(`${BASE}/view`, { method: "POST", body: form({ token: "nope" }) });
+  check("owner view rejects a wrong token", denied.status === 401 && !(await denied.text()).includes("Entries"));
+  const owner = await (await fetch(`${BASE}/view`, { method: "POST", body: form({ token: TOKEN }) })).text();
+  check("owner view shows the details", owner.includes("Entries") && owner.includes("<dd>3</dd>") && owner.includes(ORIGIN));
+
+  const posted = await (await fetch(`${BASE}/export.csv`, { method: "POST", body: form({ token: TOKEN }) })).text();
+  check("export works from the owner form", posted.trim().split("\n").length === 4);
+  check("export form rejects a wrong token", (await fetch(`${BASE}/export.csv`, { method: "POST", body: form({ token: "nope" }) })).status === 401);
+  check("robots are told to stay away", (await (await fetch(`${BASE}/robots.txt`)).text()).includes("Disallow: /"));
 
   const preflight = await fetch(BASE, { method: "OPTIONS", headers: { origin: ORIGIN } });
   check("answers preflight requests", preflight.status === 204 && preflight.headers.get("access-control-allow-origin") === ORIGIN);
